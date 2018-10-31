@@ -30,6 +30,9 @@ const voice = {
 // Optionally set a locale mapping, to map multiple different client locales to a single locale
 const localeMapping = require('./config/localeMapping.json');
 
+// Loading the configuration for the file storage
+const storageConfig = require('./config/storage.json');
+
 // Loading the configuration for the analytics tracker
 const trackingConfig = require('./config/tracking.json');
 
@@ -47,19 +50,20 @@ const app = new Kiai({
   localeMapping,
   dialog,
   voice,
+  storageConfig,
   trackingConfig,
   trackingDataCollector,
 });
 
 // clientId is required if your Action implements account linking via Google Sign In.
-// It can be retrieved through the Google Cloud console and can be set using the --client [YOUR CLIENT ID] commandline argument
+// It can be retrieved through the Google Cloud console and can be set using the --client YOUR_CLIENT_ID commandline argument
 const clientId = argv.clientId || '';
 
 // This adds support for the Dialogflow platform, support for other platforms to come
 app.addPlatform(app.PLATFORMS.DIALOGFLOW, { clientId });
 
 // This specifies which framework to use for running your endpoint(s)
-// The current line ensure that when running with the --local switch, Express will be used, and Firebase otherwise
+// The current line ensures that when running with the --local switch, Express will be used, and Firebase otherwise
 app.setFramework(local ? app.FRAMEWORKS.EXPRESS : app.FRAMEWORKS.FIREBASE);
 
 // Add extra custom endpoints, like this one for importing data
