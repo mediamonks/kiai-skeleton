@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+node_modules/
+npm-debug.log
+.tscache
+*.js.map
+/dist/
+/firebase-debug.log

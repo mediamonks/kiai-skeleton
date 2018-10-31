@@ -1,0 +1,41 @@
+{
+  "name": "kiai-skeleton",
+  "version": "0.1.0",
+  "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist/ && mkdir -p dist && cp -r config flows lib dist/ && find . -type f -depth 1 -exec cp {} dist/ \\;",
+    "ngrok": "ngrok http 3000",
+    "dev": "node index.js",
+    "dev:fb": "firebase serve --only functions --port 3000",
+    "deploy:gcf": "rm -f deploy.zip; zip -rXx node_modules,.git deploy.zip *",
+    "deploy:fb": "cd dist/ && firebase deploy && cd ..",
+    "deploy": "npm run deploy:fb"
+  },
+  "dependencies": {
+    "@google-cloud/datastore": "^1.4.2",
+    "firebase-admin": "^6.1.0",
+    "lodash": "^4.17.11",
+    "minimist": "^1.2.0",
+    "ngrok": "^3.1.0",
+    "kiai": "^0.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^2.10.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^2.7.0",
+    "prettier": "^1.14.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mediamonks/kiai-skeleton.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  }
+}
