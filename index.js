@@ -31,14 +31,14 @@ const voice = {
 // Optionally set a locale mapping, to map multiple different client locales to a single locale
 const localeMapping = require('./config/localeMapping.json');
 
-// Loading the configuration for the file storage
-const storageConfig = require('./config/storage.json');
+// Load the configuration for the file storage
+const storage = require('./config/storage.json');
 
-// Loading the configuration for the analytics tracker
-const trackingConfig = require('./config/tracking.json');
+// Load the configuration for the analytics tracker
+const tracking = require('./config/tracking.json');
 
-// Setting the function used to collect session data for the tracker
-const trackingDataCollector = conv => ({
+// Set the function used to collect session data for the tracker
+tracking.dataCollector = conv => ({
   device: {
     locale: conv.locale,
   },
@@ -48,20 +48,15 @@ const trackingDataCollector = conv => ({
   }
 });
 
-// Load the main configuration
-const config = require('./config/kiai.json');
-
-// Instantiating Kiai
+// Instantiate Kiai
 const app = new Kiai({
-  ...config,
   flows,
   locales,
   localeMapping,
   dialog,
   voice,
-  storageConfig,
-  trackingConfig,
-  trackingDataCollector,
+  storage,
+  tracking,
 });
 
 // This adds support for the Dialogflow platform, support for other platforms to come
