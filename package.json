@@ -4,13 +4,12 @@
   "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist/ && mkdir -p dist && cp -r config flows lib dist/ && find . -type f -depth 1 -exec cp {} dist/ \\;",
-    "ngrok": "ngrok http 3000",
+    "build": "rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js dist/",
     "dev": "node index.js",
-    "dev:fb": "firebase serve --only functions --port 3000",
-    "deploy:gcf": "rm -f deploy.zip; zip -rXx node_modules,.git deploy.zip *",
-    "deploy:fb": "cd dist/ && firebase deploy && cd ..",
-    "deploy": "npm run deploy:fb"
+    "dev:firebase": "firebase serve --only functions --port 3000",
+    "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
+    "deploy:firebase": "cd dist/ && firebase deploy && cd ..",
+    "deploy": "npm run deploy:firebase"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
@@ -40,6 +39,6 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": "8"
   }
 }

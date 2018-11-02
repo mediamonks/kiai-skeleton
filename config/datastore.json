@@ -1,1 +1,12 @@
-// This file should contain your Google Cloud Datastore credentials
+{
+	"type": "service_account",
+	"project_id": "real-madrid-221311",
+	"private_key_id": "4f588088bef6d6a0fdd677ff417138016d64fbe3",
+	"private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCouap+1LZfhMlK\nxRq1JG1B/ZK4zgaEOBRHFjIPzjUQ1EpJZRuh4yempqbBQV44Akfhvi2+xc7Re6Kw\nW6efv6MZ4hjK+4p479WVpyAHw64g6w46QSw0uA1cqjTVfgU6Axi+tlBjoHoGLTW6\n+aa0IUnODIgao/RnVIPISKRUVt5dTRq/XhyB0nj0ReqgSjLD1eh6HXKVKkYgpSQt\nU0o7nWuYMxFFJAMGaoL4Xw16T9cPopjliKrjDypxSHYsnPbRfjr4FRGZ+f8jawEI\nA0p5SjmU1B5RRx+Hh1Kz5ag9COzmF2H+FuYhXsoKW9w46+8rQ4e4uCvDGuTAWzg2\nl+6M2nnjAgMBAAECggEAIJXjAKWyJxZtDbytYMiNNU50tK5NgeGWwPffaUAI7Zwi\nULRvNr+5G61ZzT8DpEuEeGuTSCHJxJldHTRGVkrbhBcvdJxJ7Ptcw49IV1eKXJ8o\n20VU9UWKhxf0Jjs1ZTPN5p8tPWBz0JeQpfCrKmS3bUzsSEDb5czjup2U5xjzzw7R\nY3rCNBsqbtJcFLRPdROUqce2OSUfWDrerlu5+wwoWO4Fjhvyy+fPvnU7/g7/TSHq\n3uWq9j0fCK9xlCryQs2M8tzFQm6MAQLHJkyfrbE+d7mhfn1qO4q1iyYssw4t31Hm\nlAvPu2C3Ngv8NxfjCsGJNnRZhLZkn38b050u6evu8QKBgQDmgEt66FHwrXVsAtos\nr/XL2ERilbpc90Y1c31M3TYXi6CNbkT94jwBmtSwm1UJaQuRfA2biHVhz9181ZlN\nUavymLJG2R5gPwn0OMiwaQxWaI66uI28OfBaSvBh1SGBWheiTzpFTl4ObCKelwL/\nafshIW1SJkqjVShcxs8+5+LvGwKBgQC7Y+a6Iu4V4Psc12W0iflb7qNnJ4ScvaSc\n3ekoNkCWbc+wUEcGHXl9dNItEjZXXd+J+XAuZxQVp6h0n//KT5YYY2V1mRPMsVAe\nHxC8CWL/sTGvPT51yl1n0UTjMWCTOFlaEaM2EVm3F52oSElfBnbR6P5v2YibwAgi\nJvhjc3ok2QKBgQDHIrGTFqCr6H+YeAJbNw2INWgnL6nY5Tw/s23d+QLhZpync0uh\nd1FWJZh4l0npHlqDLwRmiYa3oSh9z99ooBWIOglTEgKfLfcAigo/9hFVmXEtuYGh\nywBuUW3JZ6NRqC7g58e01paFqUBjeJ17Yek23zUeErzKzShYtt2XQCibXwKBgHso\nqJ8TkAk/KauGAelLeWErkaedeHIPzh3vV2s/ZOm5WHQX/uYM/ykuW2iV/LMlFmM3\nVryYsMGexH+KHPKZpht3UFqe9j1lGDQD1NrRDIjiq7Xx+ZgvHX67Mpxjeoan1Un2\nJ5/EfYNxeQP+JoLW28cQbBGVFkzPREk19bBfWBrZAoGAUFaf82bkBVr9y1sKBRB7\nqgj6oHiBy3PVsSynSP19aFxhuEZH+JZXwgiB8JyfRtaSjS1dFbi022plzfB3GLRh\nFDMal5NrfbvgKSJvO8LBxpNikdhdrhPbCTIXk9sFVNe7PFk95k+MH1pHzAcs2aWT\n6pTMb9DEAvy/NnD4cUtXUp0=\n-----END PRIVATE KEY-----\n",
+	"client_email": "datastore@real-madrid-221311.iam.gserviceaccount.com",
+	"client_id": "113444924346619583819",
+	"auth_uri": "https://accounts.google.com/o/oauth2/auth",
+	"token_uri": "https://oauth2.googleapis.com/token",
+	"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/datastore%40real-madrid-221311.iam.gserviceaccount.com"
+}
