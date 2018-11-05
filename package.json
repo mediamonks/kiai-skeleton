@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js dist/",
-    "dev": "node index.js",
+    "dev": "node index.js --local",
     "dev:firebase": "firebase serve --only functions --port 3000",
     "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
     "deploy:firebase": "cd dist/ && firebase deploy && cd ..",
-    "deploy": "npm run deploy:firebase"
+    "deploy": "npm version patch && npm run deploy:firebase"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
