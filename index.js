@@ -1,6 +1,6 @@
 const argv = require('minimist')(process.argv.slice(2));
 const Kiai = require('kiai').default;
-const ngrok = require('ngrok');
+const cp = require('child_process');
 
 const { local, clientId } = argv;
 
@@ -69,16 +69,14 @@ app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 
 // Add extra custom endpoints, like this one for importing data
-app.framework.use('import', require('./lib/import'));
+// app.framework.use('import', require('./lib/import'));
 
 // Start ngrok if running locally
 if (local) {
-  ngrok.connect(process.env.PORT || 3000).then(url => {
-    console.log('Public endpoints:'); // eslint-disable-line no-console
-    app.framework.endpoints.forEach(endpoint => {
-      console.log(`${url}${endpoint}`); // eslint-disable-line no-console
-    });
-  });
+  cp.spawn(process.argv[0], ['ngrok.js', ...app.framework.endpoints], {
+    detached: true,
+    stdio: 'inherit'
+  }).unref();
 }
 
 // Export the framework for FaaS services

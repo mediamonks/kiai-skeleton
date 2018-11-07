@@ -13,5 +13,9 @@ module.exports = {
   
   end(conv) {
     conv.say('Bye!').next('general:quit');
+  },
+  
+  test(conv) {
+    conv.say('hoi!');
   }
 };

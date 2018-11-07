@@ -7,3 +7,4 @@ npm-debug.log
 /dist/
 /firebase-debug.log
 /yarn-error.log
+/ngrok.pid
