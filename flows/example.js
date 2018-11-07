@@ -5,10 +5,10 @@ module.exports = {
 
   welcome(conv) {
     conv
-      .play('SFX_Spin')
-      .show('logo')
+      // .play('SFX_Spin')
+      // .show('logo')
       .say('welcome_*')
-      .confirm({ yes: 'welcome', no: 'end' })
+      .confirm({ yes: ':welcome', no: ':end' })
   },
   
   end(conv) {
