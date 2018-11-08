@@ -45,7 +45,7 @@ tracking.dataCollector = conv => ({
   conversation: {
     flow: conv.currentFlow,
     intent: conv.currentIntent,
-  }
+  },
 });
 
 // Instantiate Kiai
@@ -75,7 +75,7 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 if (local) {
   cp.spawn(process.argv[0], ['ngrok.js', ...app.framework.endpoints], {
     detached: true,
-    stdio: 'inherit'
+    stdio: 'inherit',
   }).unref();
 }
 
