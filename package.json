@@ -19,7 +19,7 @@
     "@google-cloud/datastore": "^1.4.2",
     "firebase-admin": "^6.1.0",
     "is-running": "^2.1.0",
-    "kiai": "^0.1.5",
+    "kiai": "^1.1.0",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "ngrok": "^3.1.0",
