@@ -71,13 +71,5 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 // Add extra custom endpoints, like this one for importing data
 // app.framework.use('import', require('./lib/import'));
 
-// Start ngrok if running locally
-if (local) {
-  cp.spawn(process.argv[0], ['ngrok.js', ...app.framework.endpoints], {
-    detached: true,
-    stdio: 'inherit',
-  }).unref();
-}
-
 // Export the framework for FaaS services
 module.exports = app.framework;
