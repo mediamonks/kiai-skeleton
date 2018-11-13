@@ -4,13 +4,13 @@
   "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js dist/",
+    "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "dev": "npm-run-all --parallel dev:ts dev:local dev:ngrok",
     "dev:local": "nodemon index.js --local",
     "dev:firebase": "firebase serve --only functions --port 3000",
     "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
-    "deploy:firebase": "cd dist/ && firebase deploy && cd ..",
-    "deploy": "npm version patch && npm run deploy:firebase",
+    "deploy:firebase": "firebase deploy",
+    "deploy": "npm run deploy:firebase",
     "dev:ts": "tsc --watch",
     "dev:ngrok": "node ngrok.js /dialogflow",
     "build:ts": "tsc"
