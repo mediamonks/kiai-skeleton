@@ -1,8 +1,10 @@
 const argv = require('minimist')(process.argv.slice(2));
 const Kiai = require('kiai').default;
-const cp = require('child_process');
 
 const { local, clientId } = argv;
+const MAJOR_VERSION = require('./package.json')
+  .version.split('.')
+  .shift();
 
 // Import the flow definitions
 const flows = {
@@ -72,4 +74,6 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 // app.framework.use('import', require('./lib/import'));
 
 // Export the framework for FaaS services
-module.exports = app.framework;
+module.exports = {
+  [`v${MAJOR_VERSION}`]: app.framework,
+};
