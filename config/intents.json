@@ -1,0 +1,64 @@
+{
+	"general_transfer": {
+		"events": [
+			"actions_intent_NEW_SURFACE"
+		],
+		"isFallback": false,
+		"phrases": []
+	},
+	"confirmation": {
+		"confirmation_yes": {
+			"events": [],
+			"isFallback": false,
+			"phrases": []
+		},
+		"confirmation_no": {
+			"events": [],
+			"isFallback": false,
+			"phrases": []
+		}
+	},
+	"login": {
+		"events": [
+			"actions_intent_SIGN_IN"
+		],
+		"isFallback": false,
+		"phrases": []
+	},
+	"example_start": {
+		"events": [
+			"WELCOME",
+			"GOOGLE_ASSISTANT_WELCOME"
+		],
+		"isFallback": false,
+		"phrases": []
+	},
+	"general_fallback": {
+		"events": [],
+		"isFallback": true,
+		"phrases": []
+	},
+	"general_noInput": {
+		"events": [
+			"actions_intent_NO_INPUT"
+		],
+		"isFallback": false,
+		"phrases": []
+	},
+	"general_quit": {
+		"events": [
+			"actions_intent_CANCEL"
+		],
+		"isFallback": false,
+		"phrases": []
+	},
+	"permission_confirmation": {
+		"permission_confirmation": {
+			"events": [
+				"actions_intent_PERMISSION"
+			],
+			"isFallback": false,
+			"phrases": []
+		}
+	}
+}

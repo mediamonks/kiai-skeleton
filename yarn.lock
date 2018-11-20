@@ -1078,6 +1078,15 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
 
+dialogflow@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/dialogflow/-/dialogflow-0.7.0.tgz#5bb58839c309e5e8cd201f6d9ab617b73285ac58"
+  dependencies:
+    google-gax "^0.20.0"
+    lodash.merge "^4.6.0"
+    lodash.union "^4.6.0"
+    protobufjs "^6.8.0"
+
 diff-match-patch@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.4.tgz#6ac4b55237463761c4daf0dc603eb869124744b1"
@@ -2483,9 +2492,9 @@ jws@^3.1.4, jws@^3.1.5:
     jwa "^1.1.5"
     safe-buffer "^5.0.1"
 
-kiai@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/kiai/-/kiai-0.1.5.tgz#c299ed704de4ffd78e7eb75c7898a1f2072d55c9"
+kiai@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/kiai/-/kiai-1.2.0.tgz#da709bc85a766b8fb5857ea84e532c82531af72b"
   dependencies:
     actions-on-google "^2.4.1"
     amplitude "^3.5.0"
@@ -2594,13 +2603,17 @@ lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
-lodash.merge@^4.6.1:
+lodash.merge@^4.6.0, lodash.merge@^4.6.1:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
 
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
+
+lodash.union@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
 
 lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.6.1:
   version "4.17.11"
@@ -4148,6 +4161,10 @@ type-name@^2.0.1:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
+typescript@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
 
 undefsafe@^2.0.2:
   version "2.0.2"
