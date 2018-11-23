@@ -1,12 +1,1 @@
-{
-	"type": "service_account",
-	"project_id": "kiai-skeleton",
-	"private_key_id": "b2844786e868ac77ce6e89907c725a634f2d7754",
-	"private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCwd1B+6OCV9hVI\nzDg7iJobI8ykF1Unc59X4kE48RoLoXuDlwF1/vC/gHVJrfOuCxOTx+DH6K8md2VM\nEaqB/h/n1yTaj5gj4y7NHD5EPxMMfrU/9zjPYQn3FwOVFMXiVD0nQP4xqOAkOEzB\n6WuWE6Yvg2ajIkVlz5BJig43VwriZ+/Xj2pIl0ci/3p5Bm+JO8JJLOiv8HHplvhR\n33oT7tklunCNv1XhULL30EhY1KeoAxiVIP4Jil/jYSxlCW2MNwlZyw8P0NEQWZUT\n5fUkTkT+3jQ0gt7UG8dqvSeHMLeRB9Y9DTrVDesEksYTTXHIDQdggsF7B95AfN5x\nZtYjAoE9AgMBAAECggEABiAfe5xJVCNJPLBBa8hI3dQkYct2jFVI4h6A4uwJmlRA\nwEIGY1/Atcu3e+HYLCyHFtw7awJidrxybXgihKXQhTYfDyAovjwqryTXFibgr3sZ\nfw7YRRM/quOnX0OBP/iVG9miHpFXtczSK0askkvR0GM9tZV2YRDvV6zSuVc3PJcj\nYh1+WJNP+pReupjHdsMv06MMLjNXIxaUb6CNvQjjogRzAeUz8LvbrkbaR3A3AG7F\nzfdN30r0/RBa29+QAUjnVnGKkWwW10JfQMPVwh/JjQSO0WzG4nEscBHHQSDLyLFw\npWg9rzzq9HiPtglxy1myv5mnkaySIey+Twkpa3AX+QKBgQDoykhYgs86ugUNiQif\nKt8HDzqnlDJUZxJFir3+UlFBu83zHfffF3E/IykKjkf1M4k0l7DzMa+nJV4ZWE4I\nKoqzY/55iDvvH/Mu2IxXuXtyrVnb+CLZPXcAlBUsNjYhGYnhzfmTRgQzKnbxp25v\nL0yl9ScN3SfcGuiVNZAwjuy1OQKBgQDCD2uSUDvWXprVLtbmOSKDrKFRWcOSlDCF\noR/ZHC4GkWdcwRtAvjYEgyrScNps+Ag+lqy5dmlvso+PXxhhK15DONp9ZUxJ8dbF\nJ9NHF2Ucl6sOJSU3plXUn9kEtr+mXPJlbsx8mihe5h6fYTqQcA2rVBM4u5O3CE6O\nS/ZBIf7QJQKBgQCqXdhihqFY7mjiRga8TijZRsj7edb3tFNH98kihmYXgHWyVp1g\ndQyZU4cmxYheKHBiwB1tblCKOCvMyraY/WFy9lx33z9VuwFDqJHVZda1z65y8P+4\nE2azUqzIJYip4sHpMtBTeyt5srtIEewdjPVAg9EoMVGJoVvUT1YOY5tS6QKBgQCW\nGBkqfHYbkuaMloLOZEiGsYHACv6SI5337SxV307V86aPfihXBgd/q/f19iVq/Nhb\nmGyVsblRFDmnOXUAyutIcPPE4xGDa9KigPAP309sMv6xnRdRGIzwPIY8+B/5S5CL\n1YvBn/YzmCb9PNVwG8rmxctsKODSQ1GHC8e2jtWoJQKBgQCa+TA0MfdeNfTlmtYw\nENJHhuzQ0FDh1fI7Z33rn/Q1+f++iaf6JaOkWjYb/9RVknLttl1VtEkJKYzNgZbe\n2zoUsjjtudiQpye/7PIvDSuxwl0QctuWnFuYxQzrLIDiPyX6nux+/BMwRAB5GJS4\njn70bbKe7CVAATDhbvSvSaJxKA==\n-----END PRIVATE KEY-----\n",
-	"client_email": "dialogflow@kiai-skeleton.iam.gserviceaccount.com",
-	"client_id": "100347703976692952455",
-	"auth_uri": "https://accounts.google.com/o/oauth2/auth",
-	"token_uri": "https://oauth2.googleapis.com/token",
-	"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dialogflow%40kiai-skeleton.iam.gserviceaccount.com"
-}
+// This file should contain your Google Cloud Dialogflow credentials

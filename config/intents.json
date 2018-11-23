@@ -4,61 +4,168 @@
 			"actions_intent_NEW_SURFACE"
 		],
 		"isFallback": false,
-		"phrases": []
-	},
-	"confirmation": {
-		"confirmation_yes": {
-			"events": [],
-			"isFallback": false,
-			"phrases": []
+		"phrases": {
+			"en": []
 		},
-		"confirmation_no": {
-			"events": [],
-			"isFallback": false,
-			"phrases": []
-		}
+		"contexts": [],
+		"parameters": []
+	},
+	"confirmation_yes": {
+		"events": [],
+		"isFallback": false,
+		"phrases": {
+			"en": [
+				"please",
+				"sure",
+				"yep",
+				"yes please",
+				"yeah",
+				"ok",
+				"affirmative",
+				"okay",
+				"yes"
+			]
+		},
+		"contexts": [
+			"confirmation"
+		],
+		"parameters": []
 	},
 	"login": {
 		"events": [
 			"actions_intent_SIGN_IN"
 		],
 		"isFallback": false,
-		"phrases": []
-	},
-	"example_start": {
-		"events": [
-			"WELCOME",
-			"GOOGLE_ASSISTANT_WELCOME"
-		],
-		"isFallback": false,
-		"phrases": []
+		"phrases": {
+			"en": []
+		},
+		"contexts": [],
+		"parameters": []
 	},
 	"general_fallback": {
 		"events": [],
 		"isFallback": true,
-		"phrases": []
+		"phrases": {
+			"en": []
+		},
+		"contexts": [],
+		"parameters": []
 	},
 	"general_noInput": {
 		"events": [
 			"actions_intent_NO_INPUT"
 		],
 		"isFallback": false,
-		"phrases": []
+		"phrases": {
+			"en": []
+		},
+		"contexts": [],
+		"parameters": []
 	},
 	"general_quit": {
 		"events": [
 			"actions_intent_CANCEL"
 		],
 		"isFallback": false,
-		"phrases": []
+		"phrases": {
+			"en": []
+		},
+		"contexts": [],
+		"parameters": []
+	},
+	"example_welcome": {
+		"events": [
+			"WELCOME",
+			"GOOGLE_ASSISTANT_WELCOME"
+		],
+		"isFallback": false,
+		"phrases": {
+			"en": [
+				"hey",
+				"heya",
+				"howdy",
+				"hello hi",
+				"just going to say hi",
+				"hi",
+				"a good day",
+				"I greet you",
+				"hi there",
+				"hello",
+				"hello again",
+				"long time no see",
+				"hello there",
+				"greetings",
+				"lovely day isn't it",
+				"hey there"
+			]
+		},
+		"contexts": [],
+		"parameters": []
+	},
+	"confirmation_no": {
+		"events": [],
+		"isFallback": false,
+		"phrases": {
+			"en": [
+				"no",
+				"nope",
+				"no thanks"
+			]
+		},
+		"contexts": [
+			"confirmation"
+		],
+		"parameters": []
 	},
 	"permission_confirmation": {
-		"permission_confirmation": {
-			"events": [
-				"actions_intent_PERMISSION"
-			],
-			"isFallback": false,
-			"phrases": []
-		}
+		"events": [
+			"actions_intent_PERMISSION"
+		],
+		"isFallback": false,
+		"phrases": {
+			"en": []
+		},
+		"contexts": [
+			"permission_confirmation"
+		],
+		"parameters": []
+	},
+	"Default Welcome Intent": {
+		"events": [
+			"WELCOME"
+		],
+		"isFallback": false,
+		"phrases": {
+			"en": [
+				"just going to say hi",
+				"heya",
+				"hello hi",
+				"howdy",
+				"hey there",
+				"hi there",
+				"greetings",
+				"hey",
+				"long time no see",
+				"hello",
+				"lovely day isn't it",
+				"I greet you",
+				"hello again",
+				"hi",
+				"hello there",
+				"hi there",
+				"a good day"
+			]
+		},
+		"contexts": [],
+		"parameters": []
+	},
+	"Default Fallback Intent": {
+		"events": [],
+		"isFallback": true,
+		"phrases": {
+			"en": []
+		},
+		"contexts": [],
+		"parameters": []
 	}
 }

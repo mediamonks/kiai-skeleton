@@ -9,6 +9,7 @@ module.exports = {
             // .play('SFX_Spin')
             // .show('logo')
             .say('welcome_*')
+            .say('line break with spaces first.  \nline break with spaces after.\n  line break without spaces.\nend.')
             .confirm({ yes: ':welcome', no: ':end' });
     },
     end(conv) {
