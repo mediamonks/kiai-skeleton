@@ -8,3 +8,4 @@ npm-debug.log
 /firebase-debug.log
 /yarn-error.log
 /ngrok.pid
+*.log
