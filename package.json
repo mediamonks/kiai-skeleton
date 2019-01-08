@@ -20,7 +20,7 @@
     "dialogflow": "^0.7.0",
     "firebase-admin": "^6.1.0",
     "is-running": "^2.1.0",
-    "kiai": "^1.2.0",
+    "kiai": "^2.2.3",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "ngrok": "^3.1.0",

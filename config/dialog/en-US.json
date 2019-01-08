@@ -1,4 +1,4 @@
 {
-  "welcome_01": "Hello world!",
-  "welcome_02": "Yo!"
+  "welcome_01": "<speak><par><media xml:id=\"yanny1\"><prosody pitch=\"0.65\" rate=\"0.6\">Hi! I'm Yanny!</prosody></media><media xml:id=\"laurel1\" begin=\"0.8s\"><prosody pitch=\"0.45\" rate=\"0.4\">And I'm Laurel.</prosody></media><media xml:id=\"yanny2\" begin=\"laurel1.end-0.3s\"><prosody pitch=\"0.65\" rate=\"0.6\">We'd like to introduce you to Kiai!</prosody></media><media xml:id=\"laurel2\" begin=\"yanny2.end-1.2s\"><prosody pitch=\"0.45\" rate=\"0.4\">This is Kiai Voice Action framework.</prosody></media><media xml:id=\"yanny3\" begin=\"laurel2.end-0.8s\"><prosody pitch=\"0.65\" rate=\"0.6\">Frameworkyeah!</prosody></media><media xml:id=\"laurel3\" begin=\"yanny3.end-0.1s\"><prosody pitch=\"0.45\" rate=\"0.5\" volume=\"0.7\">Shut up.</prosody></media><media xml:id=\"yanny4\" begin=\"laurel3.end-0.1s\"><prosody pitch=\"0.65\" rate=\"0.8\" volume=\"0.4\">Okay.</prosody></media></par></speak>",
+  "error_01": "Oops! It appears an error has occurred. My apologies.\nIf this error persists, please contact support via the e-mail address listed in the action's directory information."
 }
