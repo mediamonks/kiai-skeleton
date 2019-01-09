@@ -2,8 +2,6 @@ const argv = require('minimist')(process.argv.slice(2));
 const Kiai = require('kiai').default;
 const profiler = require('./lib/profiler');
 
-profiler.start('bootstrap');
-
 const { local, clientId } = argv;
 const MAJOR_VERSION = require('./package.json')
   .version.split('.')
@@ -73,12 +71,11 @@ app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 // The current line ensures that when running with the --local switch, Express will be used, and Firebase otherwise
 app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 
-// Add extra custom endpoints, like this one for importing data
+// Add extra custom endpoints, like these for importing and exporting data
 // app.framework.use('import', require('./lib/import'));
+// app.framework.use('export', require('./lib/export'));
 
 // Export the framework for FaaS services
 module.exports = {
   [`v${MAJOR_VERSION}`]: app.framework,
 };
-
-profiler.end('bootstrap');
