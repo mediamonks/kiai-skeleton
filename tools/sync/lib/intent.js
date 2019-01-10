@@ -175,7 +175,7 @@ const parseLocalTrainingPhrase = (phrase, parameters) => {
         if (!param) {
           // prettier-ignore
           console.error(`Stopping: variable '${part}' in phrase '${phrase}' is not defined in parameters.`.error);
-          process.exit(1);
+          process.exit(0);
         }
       }
 
@@ -315,13 +315,13 @@ const validateGlobalFallbacks = (localData, remoteIntents) => {
   if (localGlobalFallBacks.length > 1) {
     // prettier-ignore
     console.log(`Quitting: more than one global fallback found locally: ${localGlobalFallBacks.map(entry => entry.displayName).join(', ')}`.error);
-    process.exit(1);
+    process.exit(0);
   }
   if (remoteGlobalFallbacks.length > 1) {
     // this should not be possible, but lets check anyway
     // prettier-ignore
     console.log(`Quitting: more than one global fallback found remotely: ${remoteGlobalFallbacks.map(intent => intent.displayName)}`.error);
-    process.exit(1);
+    process.exit(0);
   }
 
   if (localGlobalFallBacks.length === 1 && remoteGlobalFallbacks.length === 1) {
@@ -330,7 +330,7 @@ const validateGlobalFallbacks = (localData, remoteIntents) => {
     if (localGlobalFallBackName !== remoteGlobalFallBackName) {
       // prettier-ignore
       console.error(`Quitting: about to push a global fallback (${localGlobalFallBackName}), while there is already a (different) global fallback on remote (${remoteGlobalFallBackName}) which is NOT listed to be overwritten`.error);
-      process.exit(1);
+      process.exit(0);
     }
   }
 };
@@ -376,7 +376,7 @@ const pushLocalIntentsToRemote = async (credentials, basePath, limitToFiles) => 
     const confirm = await new Confirm('Do you want to continue?'.error).run();
     if (!confirm) {
       console.log('Quitting...'.debug);
-      process.exit(1);
+      process.exit(0);
     }
     console.log(`Removing ${intentsToRemove.length} remote intent(s)...`.debug);
 

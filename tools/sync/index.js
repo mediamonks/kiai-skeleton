@@ -19,6 +19,7 @@ colors.setTheme({
 });
 
 const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent');
+const keyFilePath = path.resolve(__dirname, './keys');
 
 /**
  * use: node index.js PROJECT-NAME COMMAND [optional 3rd arg]
@@ -45,14 +46,18 @@ const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent')
   const projectId = argv._[0];
   const mode = argv._[1];
 
-  const keyFilePath = './keys';
+  if (!projectId) {
+    console.error('No project id given'.error);
+    process.exit(0);
+  }
+
   const credentials = await fileUtils.getCredentials(projectId, keyFilePath);
 
   if (!credentials) {
     console.log(`Cannot find credentials for project '${projectId}' in ${keyFilePath}`.error);
-    process.exit(1);
+    process.exit(0);
   }
-  return;
+
   const languages = await miscUtils.getLanguagesInProject(credentials);
   switch (mode) {
     case 'up': {
@@ -91,7 +96,7 @@ const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent')
       const restoreFile = argv._[2];
       if (!restoreFile) {
         console.log('No filename given'.error);
-        return;
+        process.exit(0);
       }
 
       let fileData;
@@ -99,14 +104,14 @@ const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent')
         fileData = fs.readFileSync(restoreFile);
       } catch (e) {
         console.log(`Could not read from ${restoreFile}`.error);
-        return;
+        process.exit(0);
       }
 
       // prettier-ignore
       const confirm = await new Confirm(`Warning: This will overwrite ${projectId} with the contents of '${restoreFile}'. Do you want to continue?`.error).run();
       if (!confirm) {
         console.log('Quitting...'.debug);
-        return;
+        process.exit(0);
       }
 
       await new dialogflow.AgentsClient({ credentials }).restoreAgent({

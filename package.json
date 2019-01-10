@@ -13,7 +13,8 @@
     "deploy": "npm run deploy:firebase",
     "dev:ts": "tsc --watch",
     "dev:ngrok": "node ngrok.js /dialogflow",
-    "build:ts": "tsc"
+    "build:ts": "tsc",
+    "sync": "node ./tools/sync/index.js"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",

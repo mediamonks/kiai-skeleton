@@ -225,7 +225,7 @@ const pushLocalEntitiesToRemote = async (credentials, baseOutputPath) => {
     const confirm = await new Confirm('Do you want to continue?'.error).run();
     if (!confirm) {
       console.log('Quitting...'.debug);
-      process.exit(1);
+      process.exit(0);
     }
   }
 
