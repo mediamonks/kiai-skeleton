@@ -1,45 +1,9 @@
 const fileUtils = require('./file');
-const datastore = require('../../../lib/datastore');
 const miscUtils = require('./misc');
 const entityUtils = require('./entity');
 const intentUtils = require('./intent');
 const flowsInCode = require('../../../data/flows');
-const carInfoData = require('../../../data/carInfoData');
 const localContexts = Object.values(require('../../../data/contexts'));
-
-const getUniqueValuesForPropInDb = propName =>
-  datastore
-    .get('modelInformation')
-    .then(results => [...new Set(results.map(e => e[`${propName}`]))]);
-
-const getBrandDifferences = async localOutputDirectory => {
-  const brandsInDb = await getUniqueValuesForPropInDb('make');
-
-  const jsonPath = `${localOutputDirectory}/${entityUtils.entitiesDirectory}/brand.json`;
-  const localBrands = await fileUtils.readJsonFile(jsonPath).then(result => Object.keys(result));
-  return miscUtils.compareArrays(brandsInDb, localBrands, 'brand', 'database', 'local json');
-};
-
-const getCarInfoCategoryDifferences = async () => {
-  const categoriesInDb = await getUniqueValuesForPropInDb('category');
-
-  return miscUtils.compareArrays(
-    categoriesInDb,
-    Object.values(carInfoData.categoryIds),
-    'category',
-    'database',
-    'local code',
-  );
-};
-
-const getBrandModelsDifferences = async localOutputDirectory => {
-  const modelsInDb = await getUniqueValuesForPropInDb('brandModel');
-
-  const jsonPath = `${localOutputDirectory}/${entityUtils.entitiesDirectory}/brandModel.json`;
-  const localModels = await fileUtils.readJsonFile(jsonPath).then(result => Object.keys(result));
-
-  return miscUtils.compareArrays(modelsInDb, localModels, 'brandModel', 'database', 'local json');
-};
 
 /**
  * Gives some reports on a local json object representing the entities todo move/combine this with stuff in validate.js
@@ -118,17 +82,10 @@ const validateLocalFiles = async (basePath, languagesInProject) => {
     (current, other) => current === 'code' && other === 'intents', // when this check is true, the case is not necessarily an issue
   );
 
-  // database stuff
-  const brandModelResults = await getBrandModelsDifferences(basePath);
-  const brandResults = await getBrandDifferences(basePath);
-  const categoryResults = await getCarInfoCategoryDifferences(basePath);
-
+  // display all
   const allResults = [
     { title: 'contexts', data: contextResults },
     { title: 'flows', data: flowResults },
-    { title: 'brands', data: brandResults },
-    { title: 'brandModels', data: brandModelResults },
-    { title: 'categories', data: categoryResults },
   ];
   allResults.forEach(result => {
     console.log(`Processing ${result.title}`.debug);
