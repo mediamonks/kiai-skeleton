@@ -52,6 +52,7 @@ const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent')
     console.log(`Cannot find credentials for project '${projectId}' in ${keyFilePath}`.error);
     process.exit(1);
   }
+  return;
   const languages = await miscUtils.getLanguagesInProject(credentials);
   switch (mode) {
     case 'up': {

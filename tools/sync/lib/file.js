@@ -31,7 +31,6 @@ const readJsonFile = async jsonPath =>
     try {
       resolve(JSON.parse(fileData));
     } catch (e) {
-      console.warn(`Cannot parse JSON in ${jsonPath}`);
       resolve({});
     }
   });
