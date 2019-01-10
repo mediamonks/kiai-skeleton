@@ -122,7 +122,7 @@ const keyFilePath = path.resolve(__dirname, './keys');
       break;
     }
     default: {
-      console.error(`Unknown mode ${mode}`);
+      console.error(`Unknown mode ${mode || ''}`.error);
     }
   }
 })();

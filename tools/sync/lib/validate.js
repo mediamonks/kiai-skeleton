@@ -2,8 +2,8 @@ const fileUtils = require('./file');
 const miscUtils = require('./misc');
 const entityUtils = require('./entity');
 const intentUtils = require('./intent');
+const flowsInCode = require('../../../index').flows;
 
-const flowsInCode = {};
 const localContexts = [];
 
 /**

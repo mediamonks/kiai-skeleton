@@ -1,6 +1,6 @@
 const argv = require('minimist')(process.argv.slice(2));
 const Kiai = require('kiai').default;
-const profiler = require('./lib/profiler');
+// const profiler = require('./lib/profiler');
 
 const { local, clientId } = argv;
 const MAJOR_VERSION = require('./package.json')
@@ -77,5 +77,6 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 
 // Export the framework for FaaS services
 module.exports = {
+  flows,
   [`v${MAJOR_VERSION}`]: app.framework,
 };
