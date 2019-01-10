@@ -18,7 +18,7 @@ colors.setTheme({
   error: 'red',
 });
 
-const localOutputPath = path.resolve(__dirname, '../../config/dialogFlow');
+const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent');
 
 /**
  * use: node index.js PROJECT-NAME COMMAND [optional 3rd arg]
@@ -70,7 +70,7 @@ const localOutputPath = path.resolve(__dirname, '../../config/dialogFlow');
       break;
     }
     case 'compare': {
-      compareUtils.compareAll(credentials, languages, localOutputPath);
+      await compareUtils.compareAll(credentials, languages, localOutputPath);
       break;
     }
     case 'validate': {

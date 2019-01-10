@@ -2,11 +2,12 @@ const fileUtils = require('./file');
 const miscUtils = require('./misc');
 const entityUtils = require('./entity');
 const intentUtils = require('./intent');
-const flowsInCode = require('../../../data/flows');
-const localContexts = Object.values(require('../../../data/contexts'));
+
+const flowsInCode = {};
+const localContexts = [];
 
 /**
- * Gives some reports on a local json object representing the entities todo move/combine this with stuff in validate.js
+ * Gives some reports on a local json object representing the entities
  * @param basePath
  * @param languagesInProject
  */

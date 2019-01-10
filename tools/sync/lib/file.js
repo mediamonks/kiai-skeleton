@@ -28,7 +28,12 @@ const getFileNamesInDir = (directory, limitToNames) =>
 const readJsonFile = async jsonPath =>
   new Promise(resolve => {
     const fileData = fs.readFileSync(jsonPath);
-    resolve(JSON.parse(fileData));
+    try {
+      resolve(JSON.parse(fileData));
+    } catch (e) {
+      console.warn(`Cannot parse JSON in ${jsonPath}`);
+      resolve({});
+    }
   });
 
 const readJsonFiles = async (filesPath, fileNames) =>
@@ -124,7 +129,6 @@ module.exports = {
   getDateFileName,
   readLocalIntentData,
   readJsonFiles,
-  readJsonFile,
   parseJsonFilesIntoObject,
   getCredentials,
   getFileNamesInDir,

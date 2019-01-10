@@ -1,0 +1,17 @@
+This folder should contain files with Google Cloud Dialogflow Admin credentials (1 per file).
+Note that you can add more than 1 file: when running the script, the file with a matching project-id will be used.
+
+The data in a file should look like this:
+
+{
+  "type": "service_account",
+  "project_id": "...",
+  "private_key_id": "...",
+  "private_key": "...",
+  "client_email": "...",
+  "client_id": "...",
+  "auth_uri": "...",
+  "token_uri": "...",
+  "auth_provider_x509_cert_url": "...",
+  "client_x509_cert_url": "..."
+}
