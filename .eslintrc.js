@@ -15,6 +15,8 @@ module.exports = {
 		},
 	},
 	rules: {
+		// allow dev-dep imports in files in sync-folder
+		"import/no-extraneous-dependencies": ["error", { "devDependencies": ["./tools/sync/**/*.js"] }],
 		'import/extensions': [
 			'error',
 			'always',
