@@ -181,6 +181,12 @@ const pushLocalEntitiesToRemote = async credentials => {
   const agent = client.projectAgentPath(credentials.project_id);
 
   const localFileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
+
+  if (localFileNames.length === 0) {
+    console.log('No local files found, nothing to push'.debug);
+    return;
+  }
+
   const localFileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, localFileNames);
 
   // get remote entities

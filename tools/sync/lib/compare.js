@@ -47,15 +47,10 @@ const showDifferences = (localData, remoteData, singularName) => {
   }
 };
 
-const getDataFromLocalFilesAsObject = async dir => {
-  const fileNames = await fileUtils.getFileNamesInDir(dir);
-  return fileUtils.parseJsonFilesIntoObject(fileNames, dir);
-};
-
 const compare = async (type, credentials, languages, dir, retrieveRemoteMethod) => {
   console.log(`\nComparing local ${type} with remote (${credentials.project_id})`.info);
 
-  const localData = await getDataFromLocalFilesAsObject(dir);
+  const localData = await fileUtils.parseJsonFilesIntoObject(dir);
   if (Object.keys(localData).length === 0) {
     console.log(`\nNo local ${type} data found`.warn);
     return;

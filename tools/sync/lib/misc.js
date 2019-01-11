@@ -48,7 +48,7 @@ const getIntentsListForLocalFiles = (localData, remoteIntents) =>
  * @param array2Name
  * @returns {Array}
  */
-const compareArrays = (array1, array2, elementName, array1Name, array2Name, probablyFineCheck) => {
+const compareArrays = (array1, array2, elementName, array1Name, array2Name, mayBeOkCheck) => {
   const results = [];
   [array1, array2].forEach((array, index) => {
     array.forEach(element => {
@@ -57,9 +57,7 @@ const compareArrays = (array1, array2, elementName, array1Name, array2Name, prob
       const currentName = index === 0 ? array1Name : array2Name;
       if (otherArray.indexOf(element) === -1) {
         const probablyFineMessage =
-          probablyFineCheck && probablyFineCheck(currentName, otherName)
-            ? '(not necessarily wrong)'
-            : '';
+          mayBeOkCheck && mayBeOkCheck(currentName, otherName) ? '(may be ok)' : '';
         const res = `${elementName} '${element}' in ${currentName} does not exist in ${otherName} ${probablyFineMessage}`;
         if (results.indexOf(res) === -1) results.push(res);
       }

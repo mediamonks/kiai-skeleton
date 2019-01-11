@@ -1,10 +1,7 @@
 const fileUtils = require('./file');
 const miscUtils = require('./misc');
-const entityUtils = require('./entity');
 const defaults = require('./defaults');
 const flowsInCode = require('../../../index').flows;
-
-const localContexts = [];
 
 /**
  * Gives some reports on a local json object representing the entities
@@ -12,7 +9,6 @@ const localContexts = [];
  * @param languagesInProject
  */
 const validateLocalEntities = async languagesInProject => {
-  // const entitiesPath = `${basePath}/${entityUtils.entitiesDirectory}/`; // todo use 1 method to create this path
   const fileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
   const fileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, fileNames);
 
@@ -39,106 +35,72 @@ const validateLocalEntities = async languagesInProject => {
   });
 };
 
-const validateLocalFiles = async () => {
-  const intentFileNames = await fileUtils.getFileNamesInDir(defaults.intentsDir);
+const createContextId = (flowName, context, method) => `${flowName}::${context}::${method}`;
+
+/**
+ * Creates a list of entries in the local files of format: flowName::context::method
+ * @param intentFileNames
+ * @param intentObjects
+ * @returns {*}
+ */
+const getContextMethodsInIntentFiles = async () => {
+  const intentFileNames = await fileUtils.getFileNamesInDir(defaults.intentsDir); // todo use parsejson method
   const intentObjects = await fileUtils.readJsonFiles(defaults.intentsDir, intentFileNames);
 
-  const defaultKiaiContextNames = ['confirmation', 'permission_confirmation']; // these are default contexts in the agent used by kiai (will not exists in local prj)
-  const contexts = [...defaultKiaiContextNames, ...localContexts];
-
-  console.log('contexts', contexts);
-  // check contexts
-  const contextsInIntents = intentObjects.reduce((acc, intent) => {
+  return intentObjects.reduce((acc, intent, index) => {
     intent.contexts.forEach(context => {
-      if (acc.indexOf(context) === -1) acc.push(context);
+      const fileWithoutExt = intentFileNames[index].replace('.json', '');
+      const split = fileWithoutExt.split('_');
+      if (split.length !== 2) {
+        console.error(`Unexpected format of intent name: ${intentFileNames[index]}`.error);
+        return;
+      }
+      const [flowName, method] = split;
+
+      if (acc.indexOf(context) === -1) acc.push(createContextId(flowName, context, method));
     });
 
     return acc;
   }, []);
-  const contextResults = miscUtils.compareArrays(
-    contextsInIntents,
-    contexts,
-    'context',
-    'intents',
-    'code',
-  );
+};
 
-  // check flownames
-  const defaultKiaiFlowNames = ['confirmation', 'permission'];
-  const flowNamesInCode = [...defaultKiaiFlowNames, ...Object.keys(flowsInCode)];
-  const flowsInIntents = intentFileNames.reduce((acc, name) => {
-    const split = name.split('_');
-    if (split.length === 2) {
-      // flow-names that cannot be properly split will be logged below, when processing methods
-      acc.push(split[0]);
-    }
-    return acc;
-  }, []);
-  const flowResults = miscUtils.compareArrays(
-    flowsInIntents,
-    flowNamesInCode,
-    'flowName',
-    'intents',
-    'code',
-    (current, other) => current === 'code' && other === 'intents', // when this check is true, the case is not necessarily an issue
-  );
-
-  // display all
-  const allResults = [
-    { title: 'contexts', data: contextResults },
-    { title: 'flows', data: flowResults },
-  ];
-  allResults.forEach(result => {
-    console.log(`Processing ${result.title}`.debug);
-    if (result.data.length) {
-      console.log(result.data.join('\n').warn);
-    }
-  });
-
-  // method names
-  const defaultKiaiIntentNames = ['login'];
-  console.log('Processing method-names in intents'.debug);
-  intentFileNames
-    .map(name => name.replace('.json', ''))
-    .forEach((intentName, index) => {
-      const split = intentName.split('_');
-      if (split.length !== 2 && !defaultKiaiIntentNames.includes(intentName)) {
-        console.log(`Intent name '${intentName}' is not of expected format`.warn);
-      } else {
-        const flowName = split[0];
-        const methodName = split[1];
-        const contextsInFile = intentObjects[index].contexts;
-
-        contextsInFile.forEach(context => {
-          const flowFile = flowsInCode[flowName];
-          if (!flowFile) {
-            // only report if this is not a name used by kiai itself
-            if (!defaultKiaiFlowNames.includes(flowName)) {
-              console.log(`Cannot find flow '${flowName}'`.warn);
-            }
-            return;
-          }
-          const contextInFile = flowFile[context];
-          if (!contextInFile) {
-            console.log(`Cannot find context '${context}' in flow '${flowName}'`.warn);
-            return;
-          }
-          const method = contextInFile[methodName];
-          if (!method) {
+const getContextMethodsInCode = () => {
+  const results = [];
+  Object.keys(flowsInCode).forEach(flowName => {
+    const flow = flowsInCode[flowName];
+    Object.keys(flow).forEach(flowProp => {
+      if (typeof flow[flowProp] === 'object') {
+        Object.keys(flow[flowProp]).forEach(methodInContext => {
+          if (typeof flow[flowProp][methodInContext] === 'function') {
+            results.push(createContextId(flowName, flowProp, methodInContext));
+          } else {
             // prettier-ignore
-            console.log(`Cannot find method '${methodName}' for context '${context}' in flow '${flowName}'`.warn);
-            return;
-          }
-
-          if (typeof method !== 'function') {
-            // prettier-ignore
-            console.log(`Entry '${methodName}' for context '${context}' in flow '${flowName}' is not a function`);
+            console.error(`Property '${methodInContext}' in context '${flowProp}' in flow '${flowName}' is not a function`.error);
           }
         });
       }
     });
+  });
 
-  console.log('Processing entities'.debug);
+  return results;
+};
+
+const validateLocalFiles = async () => {
+  const contextMethodsInIntents = await getContextMethodsInIntentFiles();
+  const contextMethodsInCode = getContextMethodsInCode();
+
+  console.log(contextMethodsInIntents, contextMethodsInCode);
+  const contextResults = miscUtils.compareArrays(
+    contextMethodsInIntents,
+    contextMethodsInCode,
+    'handler',
+    'intents',
+    'code',
+  );
+
+  console.log(`Processing methods in contexts`.debug);
+  console.log(contextResults.join('\n').warn);
+
   // await validateLocalEntities(basePath, languagesInProject); todo
 };
 

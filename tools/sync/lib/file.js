@@ -1,10 +1,10 @@
 const fsx = require('node-fs-extra');
 const fs = require('fs');
-const defaults = require('./defaults');
+// const defaults = require('./defaults');
 
-const hasLocalProjectFolders = async () => {
-  return fs.existsSync(defaults.entitiesDir) && fs.existsSync(defaults.intentsDir);
-};
+// const hasLocalProjectFolders = async () => {
+//   return fs.existsSync(defaults.entitiesDir) && fs.existsSync(defaults.intentsDir);
+// };
 
 const writeObjectKeysAsFiles = (object, outputDir, callback) => {
   Object.keys(object).forEach(key => {
@@ -30,7 +30,11 @@ const getFileNamesInDir = (directory, limitToNames) =>
         reject(`Error reading from ${directory}`);
       }
 
-      resolve(files.filter(fileName => (limitToNames ? limitToNames.includes(fileName) : true)));
+      resolve(
+        files
+          .filter(fileName => (limitToNames ? limitToNames.includes(fileName) : true))
+          .filter(fileName => fileName !== '.DS_Store'),
+      );
     }
   });
 
@@ -58,18 +62,17 @@ const getCredentials = async (projectId, directory) => {
 
 /**
  * Reads a list of json files and stores the contents for each with the filename (without .json) as key.
- * @param fileNames
- * @param filesPath
+ * @param directory
  * @returns {Promise<void>}
  */
-const parseJsonFilesIntoObject = async (fileNames, filesPath) => {
-  if (!fileNames.every(name => name.endsWith('.json'))) {
-    throw new Error('Cannot proceed, can only process json files'); // to ensure unique keys in the result object
-  }
+const parseJsonFilesIntoObject = async directory => {
+  const fileNames = (await getFileNamesInDir(directory)).filter(name => name.endsWith('.json'));
+
   const result = {};
 
-  const filesContents = await readJsonFiles(filesPath, fileNames);
+  const filesContents = await readJsonFiles(directory, fileNames);
 
+  // todo reduce
   filesContents.forEach((content, index) => {
     const key = fileNames[index].replace('.json', '');
     result[key] = content;
@@ -80,17 +83,17 @@ const parseJsonFilesIntoObject = async (fileNames, filesPath) => {
 
 /**
  * Reads all files in the given path and returns an array with all data.
- * @param intentsPath
+ * @param directory
  * @param limitToFiles
  * @returns {Promise<*>}
  */
-const readLocalIntentData = async (intentsPath, limitToFiles) => {
+const readLocalIntentData = async (directory, limitToFiles) => {
   // get and read all files in path
-  const fileNames = await getFileNamesInDir(intentsPath, limitToFiles);
+  const fileNames = await getFileNamesInDir(directory, limitToFiles);
   if (fileNames.length === 0) {
     return [];
   }
-  const filesContents = await readJsonFiles(intentsPath, fileNames);
+  const filesContents = await readJsonFiles(directory, fileNames);
 
   // combine everything into 1 data-object
   return fileNames.map((fileName, i) => ({
@@ -134,7 +137,6 @@ const getDateFileName = async (dir, prefix) => {
 };
 
 module.exports = {
-  hasLocalProjectFolders,
   getDateFileName,
   readLocalIntentData,
   readJsonFiles,
