@@ -1,12 +1,7 @@
 const dialogflow = require('dialogflow');
-const path = require('path');
 const Confirm = require('prompt-confirm');
+const defaults = require('./defaults');
 const fileUtils = require('./file');
-const miscUtils = require('./misc');
-
-const entitiesDirectory = 'entities';
-const defaultEntityKind = 'KIND_MAP';
-const languageDelimiter = ','; // used in json to separate languages in language-key
 
 const getRemoteEntities = (credentials, language) => {
   const client = new dialogflow.EntityTypesClient({ credentials });
@@ -62,7 +57,7 @@ const getRemoteEntityDataAsObject = async (credentials, languages) => {
             if (languageWithSameSynonyms) {
               // create new entry for both languages (separated by comma)
               entityEntryObject[
-                `${languageWithSameSynonyms}${languageDelimiter}${language}`
+                `${languageWithSameSynonyms}${defaults.languageDelimiter}${language}`
               ] = synonyms;
               // and delete the old entry
               delete entityEntryObject[languageWithSameSynonyms];
@@ -78,19 +73,16 @@ const getRemoteEntityDataAsObject = async (credentials, languages) => {
   return resultData;
 };
 
-const writeRemoteEntitiesToFiles = async (credentials, languages, baseOutputPath) => {
+const writeRemoteEntitiesToFiles = async (credentials, languages) => {
   console.log(`---- Retrieving entities for ${credentials.project_id} ----`.info);
 
   const resultData = await getRemoteEntityDataAsObject(credentials, languages);
 
+  console.log(fileUtils.writeObjectKeysAsFiles);
   // write to separate files
-  fileUtils.writeObjectKeysAsFiles(
-    resultData,
-    `${path.resolve(__dirname, baseOutputPath)}/${entitiesDirectory}`,
-    (fileName, data) => {
-      console.log(`* Writing ${Object.keys(data).length} entries to ${fileName}`.debug);
-    },
-  );
+  fileUtils.writeObjectKeysAsFiles(resultData, defaults.entitiesDir, (fileName, data) => {
+    console.log(`* Writing ${Object.keys(data).length} entries to ${fileName}`.debug);
+  });
 };
 
 /**
@@ -106,7 +98,7 @@ const createEntityEntriesForLanguage = (language, entitiesObject) =>
       value: entityEntryKey,
       synonyms: Object.keys(entitiesObject[entityEntryKey]).reduce((acc, currentLocaleKey) => {
         // if the language-key contains the language we are looking for, add all synonyms
-        if (currentLocaleKey.split(languageDelimiter).indexOf(language) > -1) {
+        if (currentLocaleKey.split(defaults.languageDelimiter).indexOf(language) > -1) {
           acc.push(...entitiesObject[entityEntryKey][currentLocaleKey]);
         }
         return acc;
@@ -130,7 +122,7 @@ const getUpdateEntityTypeRequestForLocalFile = (name, displayName, fileData, lan
     name,
     displayName,
     entities: createEntityEntriesForLanguage(language, fileData),
-    kind: defaultEntityKind,
+    kind: defaults.defaultEntityKind,
   },
 });
 
@@ -140,12 +132,12 @@ const getCreateEntityTypeRequestForLocalFile = (agent, displayName, fileData, la
   entityType: {
     displayName,
     entities: createEntityEntriesForLanguage(language, fileData),
-    kind: defaultEntityKind,
+    kind: defaults.defaultEntityKind,
   },
 });
 
 const updateEntity = async (client, id, name, data, language) => {
-  console.log(`Updating entity '${name} (${language}) with id: ${id}`.debug);
+  console.log(`Updating entity '${name}' (${language})`.debug);
   const request = getUpdateEntityTypeRequestForLocalFile(id, name, data, language);
   await client.updateEntityType(request);
 };
@@ -162,7 +154,7 @@ const createEntity = async (client, agent, name, data, language) => {
 const getLanguagesInLocalFileContent = content =>
   Object.keys(content).reduce((acc, key) => {
     Object.keys(content[key]).forEach(languageKeyForEntry => {
-      languageKeyForEntry.split(languageDelimiter).forEach(langKey => {
+      languageKeyForEntry.split(defaults.languageDelimiter).forEach(langKey => {
         if (acc.indexOf(langKey) === -1) acc.push(langKey);
       });
     });
@@ -182,14 +174,14 @@ const getLanguagesInLocalFileContent = content =>
 //   return miscUtils.uniqueArray(results);
 // };
 
-const pushLocalEntitiesToRemote = async (credentials, baseOutputPath) => {
+const pushLocalEntitiesToRemote = async credentials => {
   console.log(`---- Pushing entities to project ${credentials.project_id} ----`.info);
-  const entitiesPath = `${baseOutputPath}/${entitiesDirectory}`;
+
   const client = new dialogflow.EntityTypesClient({ credentials });
   const agent = client.projectAgentPath(credentials.project_id);
 
-  const localFileNames = await fileUtils.getFileNamesInDir(entitiesPath);
-  const localFileContents = await fileUtils.readJsonFiles(entitiesPath, localFileNames);
+  const localFileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
+  const localFileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, localFileNames);
 
   // get remote entities
   const remoteEntities = await client
@@ -249,8 +241,6 @@ const pushLocalEntitiesToRemote = async (credentials, baseOutputPath) => {
 };
 
 module.exports = {
-  languageDelimiter,
-  entitiesDirectory,
   getRemoteEntityDataAsObject,
   writeRemoteEntitiesToFiles,
   pushLocalEntitiesToRemote,

@@ -1,12 +1,9 @@
 const fsx = require('node-fs-extra');
 const fs = require('fs');
-const entityUtils = require('./entity');
-const intentUtils = require('./intent');
+const defaults = require('./defaults');
 
-const hasLocalProjectFolders = async localOutputPath => {
-  const entitiesPath = `${localOutputPath}/${entityUtils.entitiesDirectory}/`;
-  const intentsPath = `${localOutputPath}/${intentUtils.intentsDirectory}/`;
-  return fs.existsSync(entitiesPath) && fs.existsSync(intentsPath);
+const hasLocalProjectFolders = async () => {
+  return fs.existsSync(defaults.entitiesDir) && fs.existsSync(defaults.intentsDir);
 };
 
 const writeObjectKeysAsFiles = (object, outputDir, callback) => {
@@ -22,15 +19,19 @@ const writeObjectKeysAsFiles = (object, outputDir, callback) => {
 
 const getFileNamesInDir = (directory, limitToNames) =>
   new Promise((resolve, reject) => {
-    const files = [];
-    try {
-      fs.readdirSync(directory).forEach(file => files.push(file));
-    } catch (e) {
-      // eslint-disable-next-line
-      reject(`Error reading from ${directory}`);
-    }
+    if (!fs.existsSync(directory)) {
+      resolve([]);
+    } else {
+      const files = [];
+      try {
+        fs.readdirSync(directory).forEach(file => files.push(file));
+      } catch (e) {
+        // eslint-disable-next-line
+        reject(`Error reading from ${directory}`);
+      }
 
-    resolve(files.filter(fileName => (limitToNames ? limitToNames.includes(fileName) : true)));
+      resolve(files.filter(fileName => (limitToNames ? limitToNames.includes(fileName) : true)));
+    }
   });
 
 const readJsonFile = async jsonPath =>

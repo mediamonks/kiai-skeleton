@@ -1,7 +1,7 @@
 const fileUtils = require('./file');
 const miscUtils = require('./misc');
 const entityUtils = require('./entity');
-const intentUtils = require('./intent');
+const defaults = require('./defaults');
 const flowsInCode = require('../../../index').flows;
 
 const localContexts = [];
@@ -11,10 +11,10 @@ const localContexts = [];
  * @param basePath
  * @param languagesInProject
  */
-const validateLocalEntities = async (basePath, languagesInProject) => {
-  const entitiesPath = `${basePath}/${entityUtils.entitiesDirectory}/`; // todo use 1 method to create this path
-  const fileNames = await fileUtils.getFileNamesInDir(entitiesPath);
-  const fileContents = await fileUtils.readJsonFiles(entitiesPath, fileNames);
+const validateLocalEntities = async languagesInProject => {
+  // const entitiesPath = `${basePath}/${entityUtils.entitiesDirectory}/`; // todo use 1 method to create this path
+  const fileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
+  const fileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, fileNames);
 
   fileContents.forEach((entity, index) => {
     const entityName = fileNames[index].replace('.json', '');
@@ -22,7 +22,7 @@ const validateLocalEntities = async (basePath, languagesInProject) => {
       const entityEntry = entity[entityEntryKey]; // for example "jaguar"
       const usedLanguagesForEntry = [];
       Object.keys(entityEntry).forEach(languageKey => {
-        const split = languageKey.split(entityUtils.languageDelimiter);
+        const split = languageKey.split(defaults.languageDelimiter);
         usedLanguagesForEntry.push(...split);
       });
 
@@ -39,14 +39,14 @@ const validateLocalEntities = async (basePath, languagesInProject) => {
   });
 };
 
-const validateLocalFiles = async (basePath, languagesInProject) => {
-  const intentsDir = `${basePath}/${intentUtils.intentsDirectory}`;
-  const intentFileNames = await fileUtils.getFileNamesInDir(intentsDir);
-  const intentObjects = await fileUtils.readJsonFiles(intentsDir, intentFileNames);
+const validateLocalFiles = async () => {
+  const intentFileNames = await fileUtils.getFileNamesInDir(defaults.intentsDir);
+  const intentObjects = await fileUtils.readJsonFiles(defaults.intentsDir, intentFileNames);
 
   const defaultKiaiContextNames = ['confirmation', 'permission_confirmation']; // these are default contexts in the agent used by kiai (will not exists in local prj)
   const contexts = [...defaultKiaiContextNames, ...localContexts];
 
+  console.log('contexts', contexts);
   // check contexts
   const contextsInIntents = intentObjects.reduce((acc, intent) => {
     intent.contexts.forEach(context => {
@@ -139,7 +139,7 @@ const validateLocalFiles = async (basePath, languagesInProject) => {
     });
 
   console.log('Processing entities'.debug);
-  await validateLocalEntities(basePath, languagesInProject);
+  // await validateLocalEntities(basePath, languagesInProject); todo
 };
 
 module.exports = {

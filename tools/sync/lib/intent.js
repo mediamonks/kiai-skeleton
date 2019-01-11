@@ -1,20 +1,9 @@
 const dialogflow = require('dialogflow');
 const Confirm = require('prompt-confirm');
-const path = require('path');
 const columnify = require('columnify');
 const fileUtils = require('./file');
 const miscUtils = require('./misc');
-
-const intentsDirectory = 'intents';
-
-const prioMp = 10000;
-const intentPriorities = {
-  highest: 100 * prioMp,
-  high: 75 * prioMp,
-  normal: 50 * prioMp,
-  low: 25 * prioMp,
-  disabled: -1,
-};
+const defaults = require('./defaults');
 
 const parseTrainingPhrase = phrase => {
   if (phrase.type !== 'EXAMPLE') {
@@ -32,7 +21,7 @@ const parseTrainingPhrase = phrase => {
 };
 
 const priorityValueToName = value =>
-  Object.keys(intentPriorities).find(key => intentPriorities[key] === value);
+  Object.keys(defaults.intentPriorities).find(key => defaults.intentPriorities[key] === value);
 
 const parseRemoteIntentsForLanguageToObject = (intents, language, destinationObject) => {
   intents.forEach(intent => {
@@ -108,18 +97,12 @@ const getRemoteIntentDataAsObject = async (credentials, languages, limitToIntent
 };
 /**
  *
- * @param projectId
+ * @param credentials
  * @param languages
- * @param baseOutputPath
  * @param limitToIntentNames if supplied: only process intents with names that are in this list
  * @returns {Promise<void>}
  */
-const writeRemoteIntentsToFiles = async (
-  credentials,
-  languages,
-  baseOutputPath,
-  limitToIntentNames,
-) => {
+const writeRemoteIntentsToFiles = async (credentials, languages, limitToIntentNames) => {
   // prettier-ignore
   const limitLog = limitToIntentNames ? `Only processing ${limitToIntentNames.join(',')}` : '';
   console.log(`\n---- Retrieving intents for ${credentials.project_id} (${limitLog}) ----`.info);
@@ -132,21 +115,17 @@ const writeRemoteIntentsToFiles = async (
 
   const logData = [];
   // write to separate files
-  await fileUtils.writeObjectKeysAsFiles(
-    intentsObject,
-    `${path.resolve(__dirname, baseOutputPath)}/${intentsDirectory}`,
-    (fileName, data) => {
-      // prettier-ignore
-      const phrasesInfo = Object.keys(data.phrases).map(key => `${key}:${data.phrases[key].length}`).join(',');
-      logData.push({
-        text: `* Writing to ${fileName}`,
-        fallback: data.isFallback ? 'fallback' : '',
-        phrases: phrasesInfo,
-        contexts: data.contexts.join(','),
-        events: data.events.join(','),
-      });
-    },
-  );
+  await fileUtils.writeObjectKeysAsFiles(intentsObject, defaults.intentsDir, (fileName, data) => {
+    // prettier-ignore
+    const phrasesInfo = Object.keys(data.phrases).map(key => `${key}:${data.phrases[key].length}`).join(',');
+    logData.push({
+      text: `* Writing to ${fileName}`,
+      fallback: data.isFallback ? 'fallback' : '',
+      phrases: phrasesInfo,
+      contexts: data.contexts.join(','),
+      events: data.events.join(','),
+    });
+  });
 
   console.log(
     columnify(logData, {
@@ -207,12 +186,12 @@ const localIntentParametersToRemote = params => ({
 });
 
 const localIntentToRemote = (displayName, fileContent, language, projectAgentPath, name) => {
-  let priority = intentPriorities[fileContent.priority];
+  let priority = defaults.intentPriorities[fileContent.priority];
 
   if (!priority) {
     // prettier-ignore
     console.log(`Unknown priority '${fileContent.priority}' for intent ${displayName} (${language}), setting it to 'normal'`.warn);
-    priority = intentPriorities.normal;
+    priority = defaults.intentPriorities.normal;
   }
 
   return {
@@ -337,20 +316,17 @@ const validateGlobalFallbacks = (localData, remoteIntents) => {
 
 /**
  * Reads all local files in the entities folder and pushes them to the given project
- * @param projectId
- * @param basePath Folder where DialogFlow data is located (should contain entities folder)
- * @param namePostFix Optional, will be appended to the all remote intent names
+ * @param credentials
  * @param limitToFiles Optional, will only process the given list of file names: ['file1.json', 'file2.json']
  * @returns {Promise<void>}
  */
-const pushLocalIntentsToRemote = async (credentials, basePath, limitToFiles) => {
+const pushLocalIntentsToRemote = async (credentials, limitToFiles) => {
   const limitLog = limitToFiles ? `(Only processing ${limitToFiles.join(',')})` : '';
   console.log(`\n---- Pushing local intents to ${credentials.project_id}. ${limitLog} ----`.info);
   const client = new dialogflow.IntentsClient({ credentials });
-  const intentsPath = `${basePath}/${intentsDirectory}`;
   const projectAgentPath = client.projectAgentPath(credentials.project_id);
 
-  const localData = await fileUtils.readLocalIntentData(intentsPath, limitToFiles);
+  const localData = await fileUtils.readLocalIntentData(defaults.intentsDir, limitToFiles);
 
   if (localData.length === 0) {
     console.log('No local files found, nothing to push'.debug);
@@ -390,7 +366,6 @@ const pushLocalIntentsToRemote = async (credentials, basePath, limitToFiles) => 
 };
 
 module.exports = {
-  intentsDirectory,
   getRemoteIntentDataAsObject,
   writeRemoteIntentsToFiles,
   pushLocalIntentsToRemote,

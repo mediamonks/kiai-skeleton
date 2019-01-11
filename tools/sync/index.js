@@ -2,17 +2,14 @@ const dialogflow = require('dialogflow');
 const Confirm = require('prompt-confirm');
 const fs = require('fs');
 const colors = require('colors');
-const path = require('path');
 const argv = require('minimist')(process.argv.slice(2));
 const intentUtils = require('./lib/intent');
 const entityUtils = require('./lib/entity');
 const miscUtils = require('./lib/misc');
 const validateUtils = require('./lib/validate');
 const fileUtils = require('./lib/file');
+const defaults = require('./lib/defaults');
 const compareUtils = require('./lib/compare');
-
-const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent');
-const keyFilePath = path.resolve(__dirname, './keys');
 
 colors.setTheme({
   info: 'green',
@@ -60,44 +57,45 @@ const Operation = {
     process.exit(0);
   }
 
-  const credentials = await fileUtils.getCredentials(projectId, keyFilePath);
+  const credentials = await fileUtils.getCredentials(projectId, defaults.keyFilesDir);
 
   if (!credentials) {
-    console.log(`Cannot find credentials for project '${projectId}' in ${keyFilePath}`.error);
+    // prettier-ignore
+    console.log(`Cannot find credentials for project '${projectId}' in ${defaults.keyFilesDir}`.error);
     process.exit(0);
   }
 
   const needLanguages = ![Operation.RESTORE, Operation.EXPORT].includes(op);
   const languages = needLanguages ? await miscUtils.getLanguagesInProject(credentials) : null;
 
-  const needLocalFiles = [Operation.SYNC_UP, Operation.VALIDATE, Operation.COMPARE].includes(op);
-  if (needLocalFiles && !(await fileUtils.hasLocalProjectFolders(localOutputPath))) {
-    console.error(`Cannot find local project files in ${localOutputPath}`.error);
-    process.exit(0);
-  }
+  // const needLocalFiles = [Operation.SYNC_UP, Operation.VALIDATE, Operation.COMPARE].includes(op);
+  // if (needLocalFiles && !(await fileUtils.hasLocalProjectFolders())) {
+  //   console.error(`Cannot find local project files`.error);
+  //   process.exit(0);
+  // }
 
   switch (op) {
     case Operation.SYNC_UP: {
       // intents before entities, because pushing intents will add incorrect entities (with the current order, the entities-push will fix/overwrite these) todo fix this
-      await intentUtils.pushLocalIntentsToRemote(credentials, localOutputPath);
-      await entityUtils.pushLocalEntitiesToRemote(credentials, localOutputPath);
+      await intentUtils.pushLocalIntentsToRemote(credentials);
+      await entityUtils.pushLocalEntitiesToRemote(credentials);
       console.log('\nSync up complete'.info);
       break;
     }
     case Operation.SYNC_DOWN: {
-      await entityUtils.writeRemoteEntitiesToFiles(credentials, languages, localOutputPath);
-      await intentUtils.writeRemoteIntentsToFiles(credentials, languages, localOutputPath);
+      await entityUtils.writeRemoteEntitiesToFiles(credentials, languages);
+      await intentUtils.writeRemoteIntentsToFiles(credentials, languages);
       console.log('\nSync down complete, validating local files'.info);
-      await validateUtils.validateLocalFiles(localOutputPath, languages);
+      await validateUtils.validateLocalFiles(languages);
       console.log('Done'.info);
       break;
     }
     case Operation.COMPARE: {
-      await compareUtils.compareAll(credentials, languages, localOutputPath);
+      await compareUtils.compareAll(credentials, languages);
       break;
     }
     case Operation.VALIDATE: {
-      await validateUtils.validateLocalFiles(localOutputPath, languages);
+      await validateUtils.validateLocalFiles(); // todo pass languages
       break;
     }
     case Operation.EXPORT: {

@@ -2,6 +2,7 @@ const { diff } = require('deep-diff');
 const fileUtils = require('./file');
 const entityUtils = require('./entity');
 const intentUtils = require('./intent');
+const defaults = require('./defaults');
 
 const ucFirst = string => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -51,28 +52,25 @@ const getDataFromLocalFilesAsObject = async dir => {
   return fileUtils.parseJsonFilesIntoObject(fileNames, dir);
 };
 
-const compare = async (
-  type,
-  credentials,
-  languages,
-  basePath,
-  appendPath,
-  retrieveRemoteMethod,
-) => {
-  const localData = await getDataFromLocalFilesAsObject(`${basePath}/${appendPath}`);
-  const remoteData = await retrieveRemoteMethod(credentials, languages);
-
+const compare = async (type, credentials, languages, dir, retrieveRemoteMethod) => {
   console.log(`\nComparing local ${type} with remote (${credentials.project_id})`.info);
+
+  const localData = await getDataFromLocalFilesAsObject(dir);
+  if (Object.keys(localData).length === 0) {
+    console.log(`\nNo local ${type} data found`.warn);
+    return;
+  }
+
+  const remoteData = await retrieveRemoteMethod(credentials, languages);
   showDifferences(localData, remoteData, type === 'entities' ? 'entity' : 'intent');
 };
 
-const compareAll = async (credentials, languages, localOutputPath) => {
+const compareAll = async (credentials, languages) => {
   await compare(
     'entities',
     credentials,
     languages,
-    localOutputPath,
-    entityUtils.entitiesDirectory,
+    defaults.entitiesDir,
     entityUtils.getRemoteEntityDataAsObject,
   );
 
@@ -80,8 +78,7 @@ const compareAll = async (credentials, languages, localOutputPath) => {
     'intents',
     credentials,
     languages,
-    localOutputPath,
-    intentUtils.intentsDirectory,
+    defaults.intentsDir,
     intentUtils.getRemoteIntentDataAsObject,
   );
 };
