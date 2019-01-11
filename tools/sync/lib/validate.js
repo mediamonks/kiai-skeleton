@@ -8,34 +8,35 @@ const flowsInCode = require('../../../index').flows;
  * @param basePath
  * @param languagesInProject
  */
-const validateLocalEntities = async languagesInProject => {
-  const fileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
-  const fileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, fileNames);
+// const validateLocalEntities = async languagesInProject => {
+//   const fileNames = await fileUtils.getFileNamesInDir(defaults.entitiesDir);
+//   const fileContents = await fileUtils.readJsonFiles(defaults.entitiesDir, fileNames);
+//
+//   fileContents.forEach((entity, index) => {
+//     const entityName = fileNames[index].replace('.json', '');
+//     Object.keys(entity).forEach(entityEntryKey => {
+//       const entityEntry = entity[entityEntryKey]; // for example "jaguar"
+//       const usedLanguagesForEntry = [];
+//       Object.keys(entityEntry).forEach(languageKey => {
+//         const split = languageKey.split(defaults.languageDelimiter);
+//         usedLanguagesForEntry.push(...split);
+//       });
+//
+//       if (usedLanguagesForEntry.length < languagesInProject.length) {
+//         // this does not necessarily have to be wrong
+//         // prettier-ignore
+//         console.log(`Not all languages (${languagesInProject.join(',')}) were defined in ${entityName}:${entityEntryKey} (has only ${usedLanguagesForEntry.join(',')})`.warn);
+//       } else if (usedLanguagesForEntry.length > languagesInProject.length) {
+//         // this should not happen (combining of languages went wrong)
+//         // prettier-ignore
+//         console.log(`A language has been defined more than once for ${entityName}:${entityEntryKey} (${usedLanguagesForEntry.join(',')})`.warn);
+//       }
+//     });
+//   });
+// };
 
-  fileContents.forEach((entity, index) => {
-    const entityName = fileNames[index].replace('.json', '');
-    Object.keys(entity).forEach(entityEntryKey => {
-      const entityEntry = entity[entityEntryKey]; // for example "jaguar"
-      const usedLanguagesForEntry = [];
-      Object.keys(entityEntry).forEach(languageKey => {
-        const split = languageKey.split(defaults.languageDelimiter);
-        usedLanguagesForEntry.push(...split);
-      });
-
-      if (usedLanguagesForEntry.length < languagesInProject.length) {
-        // this does not necessarily have to be wrong
-        // prettier-ignore
-        console.log(`Not all languages (${languagesInProject.join(',')}) were defined in ${entityName}:${entityEntryKey} (has only ${usedLanguagesForEntry.join(',')})`.warn);
-      } else if (usedLanguagesForEntry.length > languagesInProject.length) {
-        // this should not happen (combining of languages went wrong)
-        // prettier-ignore
-        console.log(`A language has been defined more than once for ${entityName}:${entityEntryKey} (${usedLanguagesForEntry.join(',')})`.warn);
-      }
-    });
-  });
-};
-
-const createContextId = (flowName, context, method) => `${flowName}::${context}::${method}`;
+const createContextId = (flowName, context, method) =>
+  [flowName, context, method].filter(entry => !!entry).join(':');
 
 /**
  * Creates a list of entries in the local files of format: flowName::context::method
@@ -43,28 +44,34 @@ const createContextId = (flowName, context, method) => `${flowName}::${context}:
  * @param intentObjects
  * @returns {*}
  */
-const getContextMethodsInIntentFiles = async () => {
-  const intentFileNames = await fileUtils.getFileNamesInDir(defaults.intentsDir); // todo use parsejson method
-  const intentObjects = await fileUtils.readJsonFiles(defaults.intentsDir, intentFileNames);
+const getHandlersInIntentFiles = async () => {
+  const fileData = await fileUtils.parseJsonFilesIntoObject(defaults.intentsDir);
 
-  return intentObjects.reduce((acc, intent, index) => {
-    intent.contexts.forEach(context => {
-      const fileWithoutExt = intentFileNames[index].replace('.json', '');
-      const split = fileWithoutExt.split('_');
-      if (split.length !== 2) {
-        console.error(`Unexpected format of intent name: ${intentFileNames[index]}`.error);
-        return;
-      }
-      const [flowName, method] = split;
+  return Object.keys(fileData).reduce((acc, fileName) => {
+    const intent = fileData[fileName];
+    const splitFileName = fileName.split('_');
 
-      if (acc.indexOf(context) === -1) acc.push(createContextId(flowName, context, method));
-    });
+    if (splitFileName.length !== 2) {
+      console.error(`Unexpected format of intent name: ${fileName}`.error);
+      return acc;
+    }
+
+    const [flowName, method] = splitFileName;
+    let handler;
+    if (intent.contexts.length === 0) {
+      handler = createContextId(flowName, null, method);
+    } else {
+      intent.contexts.forEach(context => {
+        handler = createContextId(flowName, context, method);
+      });
+    }
+    acc.push(handler);
 
     return acc;
   }, []);
 };
 
-const getContextMethodsInCode = () => {
+const getHandlersInCode = () => {
   const results = [];
   Object.keys(flowsInCode).forEach(flowName => {
     const flow = flowsInCode[flowName];
@@ -78,6 +85,8 @@ const getContextMethodsInCode = () => {
             console.error(`Property '${methodInContext}' in context '${flowProp}' in flow '${flowName}' is not a function`.error);
           }
         });
+      } else {
+        results.push(createContextId(flowName, null, flowProp));
       }
     });
   });
@@ -86,13 +95,12 @@ const getContextMethodsInCode = () => {
 };
 
 const validateLocalFiles = async () => {
-  const contextMethodsInIntents = await getContextMethodsInIntentFiles();
-  const contextMethodsInCode = getContextMethodsInCode();
+  const handlersInIntents = await getHandlersInIntentFiles();
+  const handlersInCode = getHandlersInCode();
 
-  console.log(contextMethodsInIntents, contextMethodsInCode);
   const contextResults = miscUtils.compareArrays(
-    contextMethodsInIntents,
-    contextMethodsInCode,
+    handlersInIntents,
+    handlersInCode,
     'handler',
     'intents',
     'code',

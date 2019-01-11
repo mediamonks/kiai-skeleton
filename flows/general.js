@@ -9,6 +9,14 @@ module.exports = {
     noInput(conv) {
         conv.next('general:fallback');
     },
+  someContext: {
+      method1() {
+
+      },
+    method2() {
+
+    }
+  },
     quit(conv) {
         conv.track('exit', { flowIntent: `${conv.currentFlow}:${conv.currentIntent}` }).end();
     },
