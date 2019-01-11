@@ -36,12 +36,10 @@ const flowsInCode = require('../../../index').flows;
 // };
 
 const createContextId = (flowName, context, method) =>
-  [flowName, context, method].filter(entry => !!entry).join(':');
+  (context ? [flowName, context, method] : [flowName, method]).join(':');
 
 /**
- * Creates a list of entries in the local files of format: flowName::context::method
- * @param intentFileNames
- * @param intentObjects
+ * Creates a list of entries in the local files
  * @returns {*}
  */
 const getHandlersInIntentFiles = async () => {
@@ -51,21 +49,24 @@ const getHandlersInIntentFiles = async () => {
     const intent = fileData[fileName];
     const splitFileName = fileName.split('_');
 
-    if (splitFileName.length !== 2) {
-      console.error(`Unexpected format of intent name: ${fileName}`.error);
+    const kiaiDefaultIntentNames = ['login'];
+    if (kiaiDefaultIntentNames.includes(fileName)) {
       return acc;
     }
-
-    const [flowName, method] = splitFileName;
-    let handler;
-    if (intent.contexts.length === 0) {
-      handler = createContextId(flowName, null, method);
+    if (splitFileName.length !== 2) {
+      console.error(`Unexpected format of intent name: ${fileName}`.error);
     } else {
-      intent.contexts.forEach(context => {
-        handler = createContextId(flowName, context, method);
-      });
+      const [flowName, method] = splitFileName;
+      let handler;
+      if (intent.contexts.length === 0) {
+        handler = createContextId(flowName, null, method);
+      } else {
+        intent.contexts.forEach(context => {
+          handler = createContextId(flowName, context, method);
+        });
+      }
+      acc.push(handler);
     }
-    acc.push(handler);
 
     return acc;
   }, []);
@@ -106,10 +107,10 @@ const validateLocalFiles = async () => {
     'code',
   );
 
-  console.log(`Processing methods in contexts`.debug);
+  console.log(`Comparing intent handlers in code with local intents`.debug);
   console.log(contextResults.join('\n').warn);
 
-  // await validateLocalEntities(basePath, languagesInProject); todo
+  // await validateLocalEntities(basePath, languagesInProject); todo can we skip this with new validation above?
 };
 
 module.exports = {
