@@ -11,6 +11,9 @@ const validateUtils = require('./lib/validate');
 const fileUtils = require('./lib/file');
 const compareUtils = require('./lib/compare');
 
+const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent');
+const keyFilePath = path.resolve(__dirname, './keys');
+
 colors.setTheme({
   info: 'green',
   warn: 'yellow',
@@ -18,8 +21,14 @@ colors.setTheme({
   error: 'red',
 });
 
-const localOutputPath = path.resolve(__dirname, '../../config/dialogflow-agent');
-const keyFilePath = path.resolve(__dirname, './keys');
+const Operation = {
+  SYNC_UP: 'up',
+  SYNC_DOWN: 'down',
+  COMPARE: 'compare',
+  VALIDATE: 'validate',
+  EXPORT: 'export',
+  RESTORE: 'restore',
+};
 
 /**
  * use: node index.js PROJECT-NAME COMMAND [optional 3rd arg]
@@ -43,8 +52,8 @@ const keyFilePath = path.resolve(__dirname, './keys');
  *   Restores the project from a zip file (3rd argument)
  */
 (async () => {
+  const op = argv._[1];
   const projectId = argv._[0];
-  const mode = argv._[1];
 
   if (!projectId) {
     console.error('No project id given'.error);
@@ -58,16 +67,24 @@ const keyFilePath = path.resolve(__dirname, './keys');
     process.exit(0);
   }
 
-  const languages = await miscUtils.getLanguagesInProject(credentials);
-  switch (mode) {
-    case 'up': {
+  const needLanguages = ![Operation.RESTORE, Operation.EXPORT].includes(op);
+  const languages = needLanguages ? await miscUtils.getLanguagesInProject(credentials) : null;
+
+  const needLocalFiles = [Operation.SYNC_UP, Operation.VALIDATE, Operation.COMPARE].includes(op);
+  if (needLocalFiles && !(await fileUtils.hasLocalProjectFolders(localOutputPath))) {
+    console.error(`Cannot find local project files in ${localOutputPath}`.error);
+    process.exit(0);
+  }
+
+  switch (op) {
+    case Operation.SYNC_UP: {
       // intents before entities, because pushing intents will add incorrect entities (with the current order, the entities-push will fix/overwrite these) todo fix this
       await intentUtils.pushLocalIntentsToRemote(credentials, localOutputPath);
       await entityUtils.pushLocalEntitiesToRemote(credentials, localOutputPath);
       console.log('\nSync up complete'.info);
       break;
     }
-    case 'down': {
+    case Operation.SYNC_DOWN: {
       await entityUtils.writeRemoteEntitiesToFiles(credentials, languages, localOutputPath);
       await intentUtils.writeRemoteIntentsToFiles(credentials, languages, localOutputPath);
       console.log('\nSync down complete, validating local files'.info);
@@ -75,15 +92,15 @@ const keyFilePath = path.resolve(__dirname, './keys');
       console.log('Done'.info);
       break;
     }
-    case 'compare': {
+    case Operation.COMPARE: {
       await compareUtils.compareAll(credentials, languages, localOutputPath);
       break;
     }
-    case 'validate': {
+    case Operation.VALIDATE: {
       await validateUtils.validateLocalFiles(localOutputPath, languages);
       break;
     }
-    case 'export': {
+    case Operation.EXPORT: {
       const result = await new dialogflow.AgentsClient({ credentials }).exportAgent({
         parent: `projects/${projectId}`,
       });
@@ -92,7 +109,7 @@ const keyFilePath = path.resolve(__dirname, './keys');
       console.log(`\nExport written to file '${fileName}'`.info);
       break;
     }
-    case 'restore': {
+    case Operation.RESTORE: {
       const restoreFile = argv._[2];
       if (!restoreFile) {
         console.log('No filename given'.error);
@@ -122,7 +139,7 @@ const keyFilePath = path.resolve(__dirname, './keys');
       break;
     }
     default: {
-      console.error(`Unknown mode ${mode || ''}`.error);
+      console.error(`Unknown operation ${op || ''}`.error);
     }
   }
 })();

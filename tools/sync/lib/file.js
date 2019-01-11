@@ -1,5 +1,13 @@
 const fsx = require('node-fs-extra');
 const fs = require('fs');
+const entityUtils = require('./entity');
+const intentUtils = require('./intent');
+
+const hasLocalProjectFolders = async localOutputPath => {
+  const entitiesPath = `${localOutputPath}/${entityUtils.entitiesDirectory}/`;
+  const intentsPath = `${localOutputPath}/${intentUtils.intentsDirectory}/`;
+  return fs.existsSync(entitiesPath) && fs.existsSync(intentsPath);
+};
 
 const writeObjectKeysAsFiles = (object, outputDir, callback) => {
   Object.keys(object).forEach(key => {
@@ -125,6 +133,7 @@ const getDateFileName = async (dir, prefix) => {
 };
 
 module.exports = {
+  hasLocalProjectFolders,
   getDateFileName,
   readLocalIntentData,
   readJsonFiles,

@@ -12,7 +12,7 @@ const localContexts = [];
  * @param languagesInProject
  */
 const validateLocalEntities = async (basePath, languagesInProject) => {
-  const entitiesPath = `${basePath}/${entityUtils.entitiesDirectory}/`;
+  const entitiesPath = `${basePath}/${entityUtils.entitiesDirectory}/`; // todo use 1 method to create this path
   const fileNames = await fileUtils.getFileNamesInDir(entitiesPath);
   const fileContents = await fileUtils.readJsonFiles(entitiesPath, fileNames);
 
