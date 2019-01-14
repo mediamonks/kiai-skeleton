@@ -35,7 +35,7 @@ const getIntentsListForLocalFiles = (localData, remoteIntents) =>
       localEntry =>
         ` ${
           remoteIntents.find(intent => intent.displayName === localEntry.displayName) ? '*' : '+'
-        } ${localEntry.displayName}`,
+          } ${localEntry.displayName}`,
     )
     .join('\n');
 
@@ -48,7 +48,15 @@ const getIntentsListForLocalFiles = (localData, remoteIntents) =>
  * @param array2Name
  * @returns {Array}
  */
-const compareArrays = (array1, array2, elementName, array1Name, array2Name, mayBeOkCheck) => {
+const compareArrays = (
+  array1,
+  array2,
+  elementName,
+  array1Name,
+  array2Name,
+  mayBeOkCheck,
+  skipCheck,
+) => {
   const results = [];
   [array1, array2].forEach((array, index) => {
     array.forEach(element => {
@@ -56,8 +64,12 @@ const compareArrays = (array1, array2, elementName, array1Name, array2Name, mayB
       const otherName = index === 0 ? array2Name : array1Name;
       const currentName = index === 0 ? array1Name : array2Name;
       if (otherArray.indexOf(element) === -1) {
+        if (skipCheck && skipCheck(currentName, otherName, element)) {
+          return;
+        }
+
         const probablyFineMessage =
-          mayBeOkCheck && mayBeOkCheck(currentName, otherName) ? '(may be ok)' : '';
+          mayBeOkCheck && mayBeOkCheck(currentName, otherName, element) ? '(may be ok)' : '';
         const res = `${elementName} '${element}' in ${currentName} does not exist in ${otherName} ${probablyFineMessage}`;
         if (results.indexOf(res) === -1) results.push(res);
       }
