@@ -80,9 +80,13 @@ const getHandlersInCode = () => {
     return results;
   }
 
+  const ignoreFlowProps = ['globalMethods'];
+
   Object.keys(flowsInCode).forEach(flowName => {
     const flow = flowsInCode[flowName];
     Object.keys(flow).forEach(flowProp => {
+      if (ignoreFlowProps.includes(flowProp)) return;
+
       if (typeof flow[flowProp] === 'object') {
         Object.keys(flow[flowProp]).forEach(methodInContext => {
           if (typeof flow[flowProp][methodInContext] === 'function') {
@@ -111,6 +115,11 @@ const validateLocalFiles = async () => {
     'handler',
     'intents',
     'code',
+    null,
+    // this method skips checks for handlers in code without context (so: a method directly on the root of a flow object),
+    // so it is ok when they have no counterpart in an intent. The other way around (does such a handler exist in code when
+    // we find one in an intent) is still happening.
+    (currentName, otherName, element) => currentName === 'code' && element.split(':').length === 2,
   );
 
   console.log(`Comparing intent handlers in code with local intents`.debug);
