@@ -45,6 +45,13 @@ const createContextId = (flowName, context, method) =>
 const getHandlersInIntentFiles = async () => {
   const fileData = await fileUtils.parseJsonFilesIntoObject(defaults.intentsDir);
 
+  // these are kiai-specific handlers, so we dont look for them in the flows
+  const skipHandlers = [
+    'confirmation:confirmation:no',
+    'confirmation:confirmation:yes',
+    'permission:permission_confirmation:confirmation',
+  ];
+
   return Object.keys(fileData).reduce((acc, fileName) => {
     const intent = fileData[fileName];
     const splitFileName = fileName.split('_');
@@ -65,7 +72,9 @@ const getHandlersInIntentFiles = async () => {
           handler = createContextId(flowName, context, method);
         });
       }
-      acc.push(handler);
+      if (!skipHandlers.includes(handler)) {
+        acc.push(handler);
+      }
     }
 
     return acc;
