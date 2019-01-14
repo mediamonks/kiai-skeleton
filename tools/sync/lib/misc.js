@@ -35,7 +35,7 @@ const getIntentsListForLocalFiles = (localData, remoteIntents) =>
       localEntry =>
         ` ${
           remoteIntents.find(intent => intent.displayName === localEntry.displayName) ? '*' : '+'
-          } ${localEntry.displayName}`,
+        } ${localEntry.displayName}`,
     )
     .join('\n');
 
@@ -46,6 +46,8 @@ const getIntentsListForLocalFiles = (localData, remoteIntents) =>
  * @param elementName
  * @param array1Name
  * @param array2Name
+ * @param mayBeOkCheck if method returns true, we add a message to the report saying that this specific 'error' may be ok
+ * @param skipCheck if this metohd returns true, we fully skip the check
  * @returns {Array}
  */
 const compareArrays = (
