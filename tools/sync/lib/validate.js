@@ -74,6 +74,12 @@ const getHandlersInIntentFiles = async () => {
 
 const getHandlersInCode = () => {
   const results = [];
+
+  if (!flowsInCode) {
+    console.error('Flows in code NOT found, please fix this reference'.error);
+    return results;
+  }
+
   Object.keys(flowsInCode).forEach(flowName => {
     const flow = flowsInCode[flowName];
     Object.keys(flow).forEach(flowProp => {
