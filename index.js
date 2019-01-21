@@ -1,17 +1,14 @@
 const argv = require('minimist')(process.argv.slice(2));
 const Kiai = require('kiai').default;
+
+const packageJson = require('./package.json');
 // const profiler = require('./lib/profiler');
 
 const { local, clientId } = argv;
-const MAJOR_VERSION = require('./package.json')
-  .version.split('.')
-  .shift();
+const MAJOR_VERSION = packageJson.version.split('.').shift();
 
 // Import the flow definitions
-const flows = {
-  general: require('./flows/general'),
-  example: require('./flows/example'),
-};
+const flows = { general: require('./flows/general'), example: require('./flows/example') };
 
 // Import the translation files
 const locales = {
@@ -42,13 +39,8 @@ const tracking = require('./config/tracking.json');
 
 // Set the function used to collect session data for the tracker
 tracking.dataCollector = conv => ({
-  device: {
-    locale: conv.locale,
-  },
-  conversation: {
-    flow: conv.currentFlow,
-    intent: conv.currentIntent,
-  },
+  device: { locale: conv.locale },
+  conversation: { flow: conv.currentFlow, intent: conv.currentIntent },
 });
 
 // Instantiate Kiai
@@ -65,7 +57,9 @@ const app = new Kiai({
 // This adds support for the Dialogflow platform, support for other platforms to come
 // clientId is required only if your Action implements account linking via Google Sign In.
 // It can be retrieved through the Google Cloud console and can be set using the --client YOUR_CLIENT_ID commandline argument
-app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
+app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, {
+  clientId: '284326300803-nsd6p8q3lc8d2m6vae39ivq1i24em487.apps.googleusercontent.com',
+});
 
 // This specifies which framework to use for running your endpoint(s)
 // The current line ensures that when running with the --local switch, Express will be used, and Firebase otherwise
@@ -75,8 +69,19 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
 // app.framework.use('import', require('./lib/import'));
 // app.framework.use('export', require('./lib/export'));
 
-// Export the framework for FaaS services
-module.exports = {
-  flows,
-  [`v${MAJOR_VERSION}`]: app.framework,
-};
+if (local) {
+  // Set up tunnel to Serveo for public proxy
+  require('./tools/serveo')({ subdomain: packageJson.name, port: process.env.PORT })
+    .then(url => {
+      console.log('Public endpoints:');
+      app.framework.endpoints.forEach(endpoint => {
+        console.log(`${url}${endpoint}`);
+      });
+    })
+    .catch(error => {
+      console.error('Failed to start Serveo proxy:', error);
+    });
+} else {
+  // Export the framework for FaaS services
+  module.exports = { flows, [`v${MAJOR_VERSION}`]: app.framework };
+}

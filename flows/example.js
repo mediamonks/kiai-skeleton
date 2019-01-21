@@ -8,11 +8,15 @@ module.exports = {
         conv
             // .play('SFX_Spin')
             // .show('logo')
-            .say('welcome_*')
-            .confirm({ yes: ':welcome', no: ':end' });
+            // .say('welcome_*', )
+            .login(':loginSuccessful', 'Please log in.');
+        // .confirm({ yes: ':welcome', no: ':end' });
     },
     end(conv) {
         conv.say('Bye!').next('general:quit');
+    },
+    loginSuccessful(conv) {
+        conv.say('Login successful.');
     },
     list(conv) {
         conv.say("Here's a list!").list({
