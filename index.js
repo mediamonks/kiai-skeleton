@@ -73,13 +73,13 @@ if (local) {
   // Set up tunnel to Serveo for public proxy
   require('./tools/serveo')({ subdomain: packageJson.name, port: process.env.PORT })
     .then(url => {
-      console.log('Public endpoints:');
+      console.log('Public endpoints:'); // eslint-disable-line no-console
       app.framework.endpoints.forEach(endpoint => {
-        console.log(`${url}${endpoint}`);
+        console.log(`${url}${endpoint}`); // eslint-disable-line no-console
       });
     })
     .catch(error => {
-      console.error('Failed to start Serveo proxy:', error);
+      console.error('Failed to start Serveo proxy:', error); // eslint-disable-line no-console
     });
 } else {
   // Export the framework for FaaS services
