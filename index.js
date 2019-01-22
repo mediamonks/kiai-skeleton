@@ -1,10 +1,13 @@
 const argv = require('minimist')(process.argv.slice(2));
+
+const { local, clientId, port } = argv;
+process.env.PORT = port || 3000;
+
 const Kiai = require('kiai').default;
 
 const packageJson = require('./package.json');
 // const profiler = require('./lib/profiler');
 
-const { local, clientId } = argv;
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
 // Import the flow definitions
@@ -57,9 +60,7 @@ const app = new Kiai({
 // This adds support for the Dialogflow platform, support for other platforms to come
 // clientId is required only if your Action implements account linking via Google Sign In.
 // It can be retrieved through the Google Cloud console and can be set using the --client YOUR_CLIENT_ID commandline argument
-app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, {
-  clientId: '284326300803-nsd6p8q3lc8d2m6vae39ivq1i24em487.apps.googleusercontent.com',
-});
+app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 
 // This specifies which framework to use for running your endpoint(s)
 // The current line ensures that when running with the --local switch, Express will be used, and Firebase otherwise

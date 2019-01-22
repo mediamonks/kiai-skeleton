@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "dev": "npm-run-all --parallel dev:ts dev:local",
-    "dev:local": "PORT=`node ./tools/port.js` nodemon index.js --local",
+    "dev:local": "nodemon index.js --local --port `node ./tools/port.js`",
     "dev:firebase": "firebase serve --only functions --port 3000",
     "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
     "deploy:firebase": "firebase deploy",
