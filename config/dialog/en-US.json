@@ -1,5 +1,7 @@
 {
   "welcome_01": "Welcome!",
   "welcome_02": "Hey there.",
+  "fallback_01": "My apologies, I didn't quite get that.",
+  "fallback_02": "Could you please repeat that?",
   "error_01": "Oops! It appears an error has occurred. My apologies.\nIf this error persists, please contact support via the e-mail address listed in the action's directory information."
 }

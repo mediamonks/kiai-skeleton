@@ -2,19 +2,25 @@ import { Conversation } from 'kiai';
 
 module.exports = {
   start(conv: Conversation) {
+    conv.login(':login', 'Please log in');
+  },
+  
+  login(conv: Conversation, loginSuccessful) {
+    if (loginSuccessful) {
+      conv.say('Hello {name}!', { name: <string>conv.userProfile.name });
+    } else {
+      conv.say('Hello stranger.');
+    }
     conv.next(':welcome');
   },
-
+  
   welcome(conv: Conversation) {
     conv
       // .play('SFX_Spin')
       // .show('logo')
-      .say('welcome_*', )
-      .confirm({ yes: ':welcome', no: ':end' });
-  },
-
-  end(conv: Conversation) {
-    conv.say('Bye!').next('general:quit');
+      .say('welcome_*')
+      .say('Would you like to see some kittens?')
+      .confirm({ yes: ':list', no: ':end' });
   },
 
   list(conv: Conversation) {
@@ -34,5 +40,10 @@ module.exports = {
         },
       ],
     });
+    conv.suggest('Item 1', 'Item 2');
+  },
+  
+  end(conv: Conversation) {
+    conv.say('Bye!').next('general:quit');
   },
 };

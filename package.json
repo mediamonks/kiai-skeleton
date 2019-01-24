@@ -6,14 +6,13 @@
   "scripts": {
     "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "dev": "npm-run-all --parallel dev:ts dev:local",
-    "dev:local": "nodemon index.js --local --port `node ./tools/port.js`",
+    "dev:local": "cross-env PORT=`node ./tools/port.js` nodemon index.js --local",
     "dev:firebase": "firebase serve --only functions --port 3000",
     "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
     "deploy:firebase": "firebase deploy",
     "deploy": "npm run deploy:firebase",
-    "dev:ts": "tsc --watch",
-    "dev:port": "node tools/setPort.js",
-    "build:ts": "tsc",
+    "dev:ts": "tsc --watch -p tslint.json",
+    "build:ts": "tsc -p tslint.json",
     "sync": "node ./tools/sync/index.js"
   },
   "dependencies": {
@@ -25,6 +24,7 @@
   "devDependencies": {
     "colors": "^1.3.3",
     "columnify": "^1.5.4",
+    "cross-env": "^5.2.0",
     "deep-diff": "^1.0.2",
     "dialogflow": "^0.7.0",
     "eslint": "^5.8.0",

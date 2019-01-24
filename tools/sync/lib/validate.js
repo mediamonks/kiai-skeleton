@@ -1,7 +1,7 @@
 const fileUtils = require('./file');
 const miscUtils = require('./misc');
 const defaults = require('./defaults');
-const flowsInCode = require('../../../index').flows;
+const flowsInCode = require('../../../flows');
 
 /**
  * Gives some reports on a local json object representing the entities

@@ -2,6 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = {
     start(conv) {
+        conv.login(':login', 'Please log in');
+    },
+    login(conv, loginSuccessful) {
+        if (loginSuccessful) {
+            conv.say('Hello {name}!', { name: conv.userProfile.name });
+        }
+        else {
+            conv.say('Hello stranger.');
+        }
         conv.next(':welcome');
     },
     welcome(conv) {
@@ -9,10 +18,8 @@ module.exports = {
             // .play('SFX_Spin')
             // .show('logo')
             .say('welcome_*')
-            .confirm({ yes: ':welcome', no: ':end' });
-    },
-    end(conv) {
-        conv.say('Bye!').next('general:quit');
+            .say('Would you like to see some kittens?')
+            .confirm({ yes: ':list', no: ':end' });
     },
     list(conv) {
         conv.say("Here's a list!").list({
@@ -30,6 +37,10 @@ module.exports = {
                 },
             ],
         });
+        conv.suggest('Item 1', 'Item 2');
+    },
+    end(conv) {
+        conv.say('Bye!').next('general:quit');
     },
 };
 //# sourceMappingURL=example.js.map

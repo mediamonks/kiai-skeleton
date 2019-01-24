@@ -1,7 +1,6 @@
 const argv = require('minimist')(process.argv.slice(2));
 
-const { local, clientId, port } = argv;
-process.env.PORT = port || 3000;
+const { local, clientId } = argv;
 
 const Kiai = require('kiai').default;
 
@@ -11,7 +10,7 @@ const packageJson = require('./package.json');
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
 // Import the flow definitions
-const flows = { general: require('./flows/general'), example: require('./flows/example') };
+const flows = require('./flows');
 
 // Import the translation files
 const locales = {
@@ -84,5 +83,7 @@ if (local) {
     });
 } else {
   // Export the framework for FaaS services
-  module.exports = { flows, [`v${MAJOR_VERSION}`]: app.framework };
+  module.exports = {
+    [`v${MAJOR_VERSION}`]: app.framework,
+  };
 }

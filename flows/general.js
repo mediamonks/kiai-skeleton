@@ -4,7 +4,7 @@ module.exports = {
     fallback(conv) {
         if (conv.repromptCount > 3)
             return conv.next('general:quit');
-        conv.say('Huh, what?').repeat();
+        return conv.say('fallback_*').repeat();
     },
     noInput(conv) {
         conv.next('general:fallback');
