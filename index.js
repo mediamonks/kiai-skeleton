@@ -1,11 +1,9 @@
-const argv = require('minimist')(process.argv.slice(2));
+const fs = require('fs');
 const Kiai = require('kiai').default;
-const port = require('./tools/port');
-// const profiler = require('./lib/profiler');
+const argv = require('minimist')(process.argv.slice(2));
 const packageJson = require('./package.json');
-const serveo = require('./tools/serveo');
 
-const { local, clientId } = argv;
+const { local } = argv;
 
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
@@ -56,38 +54,17 @@ const app = new Kiai({
   tracking,
 });
 
-// This adds support for the Dialogflow platform, support for other platforms to come
-// clientId is required only if your Action implements account linking via Google Sign In.
-// It can be retrieved through the Google Cloud console and can be set using the --client YOUR_CLIENT_ID commandline argument
+const clientId = fs.readFileSync('./config/CLIENT_ID').toString();
+
 app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 
-if (local) {
-  (async function() {
-    try {
-      process.env.PORT = await port(process.env.PORT || 3000);
-    } catch (error) {
-      console.error(error);
-    }
+app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE, {
+  port: process.env.PORT,
+});
 
-    // Set up tunnel to Serveo for public proxy
-    serveo({ subdomain: packageJson.name, port: process.env.PORT })
-      .then(url => {
-        console.log(`Remote proxy started: ${url} -> http://localhost:${process.env.PORT}`);
-      })
-      .catch(error => {
-        console.error('Failed to start Serveo proxy:', error);
-      });
+// app.framework.use('import', require('./lib/import'));
+// app.framework.use('export', require('./lib/export'));
+// app.framework.use('delete', require('./lib/delete'));
 
-    app.setFramework(Kiai.FRAMEWORKS.EXPRESS);
-
-    // app.framework.use('import', require('./lib/import'));
-    // app.framework.use('export', require('./lib/export'));
-    // app.framework.use('delete', require('./lib/delete'));
-  })();
-} else {
-  app.setFramework(Kiai.FRAMEWORKS.FIREBASE);
-
-  module.exports = {
-    [`v${MAJOR_VERSION}`]: app.framework,
-  };
-}
+// Export the framework for FaaS services
+module.exports = { flows, [`v${MAJOR_VERSION}`]: app.framework };

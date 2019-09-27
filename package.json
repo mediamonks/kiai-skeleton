@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "dev": "npm-run-all --parallel dev:ts dev:local",
-    "dev:local": "nodemon index.js --local --clientId 284326300803-nsd6p8q3lc8d2m6vae39ivq1i24em487.apps.googleusercontent.com",
+    "dev:local": "node tools/dev-server.js",
     "dev:firebase": "firebase serve --only functions --port 3000",
     "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
     "deploy:firebase": "firebase deploy",
@@ -36,6 +36,8 @@
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-prettier": "^2.7.0",
     "firebase-admin": "^6.5.1",
+    "localtunnel": "^2.0.0",
+    "node-cleanup": "^2.1.2",
     "node-fs-extra": "^0.8.2",
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.3",
