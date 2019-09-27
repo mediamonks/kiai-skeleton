@@ -2,9 +2,10 @@ import { Conversation } from 'kiai';
 
 module.exports = {
   start(conv: Conversation) {
-    conv.login(':login', 'Please log in');
+    // conv.login(':login', 'Please log in');
+    conv.next(':welcome');
   },
-  
+
   login(conv: Conversation, loginSuccessful) {
     if (loginSuccessful) {
       conv.say('Hello {name}!', { name: <string>conv.userProfile.name });
@@ -13,13 +14,14 @@ module.exports = {
     }
     conv.next(':welcome');
   },
-  
+
   welcome(conv: Conversation) {
     conv
       // .play('SFX_Spin')
       // .show('logo')
       .say('welcome_*')
-      .say('Would you like to see some kittens?')
+      .say('<par><media><audio src="https://freemusicarchive.org/file/music/no_curator/Monplaisir/Heat_of_the_Summer/Monplaisir_-_04_-_Stage_1_Level_24.mp3"></audio></media><media><speak>Would you like to see some kittens?</speak></media></par>')
+      // .say('Would you like to see some kittens?')
       .confirm({ yes: ':list', no: ':end' });
   },
 
@@ -42,7 +44,7 @@ module.exports = {
     });
     conv.suggest('Item 1', 'Item 2');
   },
-  
+
   end(conv: Conversation) {
     conv.say('Bye!').next('general:quit');
   },

@@ -1,11 +1,11 @@
 const argv = require('minimist')(process.argv.slice(2));
+const Kiai = require('kiai').default;
+const port = require('./tools/port');
+// const profiler = require('./lib/profiler');
+const packageJson = require('./package.json');
+const serveo = require('./tools/serveo');
 
 const { local, clientId } = argv;
-
-const Kiai = require('kiai').default;
-
-const packageJson = require('./package.json');
-// const profiler = require('./lib/profiler');
 
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
@@ -61,28 +61,32 @@ const app = new Kiai({
 // It can be retrieved through the Google Cloud console and can be set using the --client YOUR_CLIENT_ID commandline argument
 app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 
-// This specifies which framework to use for running your endpoint(s)
-// The current line ensures that when running with the --local switch, Express will be used, and Firebase otherwise
-app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE);
-
-// Add extra custom endpoints, like these for importing and exporting data
-// app.framework.use('import', require('./lib/import'));
-// app.framework.use('export', require('./lib/export'));
-
 if (local) {
-  // Set up tunnel to Serveo for public proxy
-  require('./tools/serveo')({ subdomain: packageJson.name, port: process.env.PORT })
-    .then(url => {
-      console.log('Public endpoints:'); // eslint-disable-line no-console
-      app.framework.endpoints.forEach(endpoint => {
-        console.log(`${url}${endpoint}`); // eslint-disable-line no-console
+  (async function() {
+    try {
+      process.env.PORT = await port(process.env.PORT || 3000);
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Set up tunnel to Serveo for public proxy
+    serveo({ subdomain: packageJson.name, port: process.env.PORT })
+      .then(url => {
+        console.log(`Remote proxy started: ${url} -> http://localhost:${process.env.PORT}`);
+      })
+      .catch(error => {
+        console.error('Failed to start Serveo proxy:', error);
       });
-    })
-    .catch(error => {
-      console.error('Failed to start Serveo proxy:', error); // eslint-disable-line no-console
-    });
+
+    app.setFramework(Kiai.FRAMEWORKS.EXPRESS);
+
+    // app.framework.use('import', require('./lib/import'));
+    // app.framework.use('export', require('./lib/export'));
+    // app.framework.use('delete', require('./lib/delete'));
+  })();
 } else {
-  // Export the framework for FaaS services
+  app.setFramework(Kiai.FRAMEWORKS.FIREBASE);
+
   module.exports = {
     [`v${MAJOR_VERSION}`]: app.framework,
   };

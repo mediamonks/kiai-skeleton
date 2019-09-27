@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = {
     start(conv) {
-        conv.login(':login', 'Please log in');
+        // conv.login(':login', 'Please log in');
+        conv.next(':welcome');
     },
     login(conv, loginSuccessful) {
         if (loginSuccessful) {
@@ -18,7 +19,8 @@ module.exports = {
             // .play('SFX_Spin')
             // .show('logo')
             .say('welcome_*')
-            .say('Would you like to see some kittens?')
+            .say('<par><media><audio src="https://freemusicarchive.org/file/music/no_curator/Monplaisir/Heat_of_the_Summer/Monplaisir_-_04_-_Stage_1_Level_24.mp3"></audio></media><media><speak>Would you like to see some kittens?</speak></media></par>')
+            // .say('Would you like to see some kittens?')
             .confirm({ yes: ':list', no: ':end' });
     },
     list(conv) {

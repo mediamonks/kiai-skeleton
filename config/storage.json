@@ -1,5 +1,5 @@
 {
-  "bucketUrl": "PUBLIC URL TO S3 BUCKET OR GOOGLE CLOUD STORAGE ROOT HERE",
+  "rootUrl": "PUBLIC URL TO S3 BUCKET OR GOOGLE CLOUD STORAGE ROOT HERE",
   "paths": {
     "sfx": "sfx/",
     "voice": "voice/",
