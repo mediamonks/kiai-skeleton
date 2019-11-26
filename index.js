@@ -67,4 +67,4 @@ app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE, {
 // app.framework.use('delete', require('./lib/delete'));
 
 // Export the framework for FaaS services
-module.exports = { flows, [`v${MAJOR_VERSION}`]: app.framework };
+module.exports = { [`v${MAJOR_VERSION}`]: app.framework };

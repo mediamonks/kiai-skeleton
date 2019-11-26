@@ -4,20 +4,19 @@
   "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "dev": "npm-run-all --parallel dev:ts dev:local",
-    "dev:local": "node tools/dev-server.js",
-    "dev:firebase": "firebase serve --only functions --port 3000",
-    "deploy:gcloud": "rm -f deploy.zip; zip -rXx node_modules,.git,assets deploy.zip *",
-    "deploy:firebase": "firebase deploy",
-    "deploy": "npm run deploy:firebase",
     "dev:ts": "tsc --watch -p tslint.json",
+    "dev:local": "node tools/dev-server.js",
+    "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "build:ts": "tsc -p tslint.json",
-    "sync": "node ./tools/sync/index.js"
+    "deploy": "npm run deploy:firebase",
+    "deploy:firebase": "firebase deploy",
+    "sync": "node ./tools/sync/index.js",
+    "voice": "node ./tools/voiceIndex.js"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
-    "kiai": "^2.4.0",
+    "kiai": "^3.1.1",
     "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "portfinder": "^1.0.20"
