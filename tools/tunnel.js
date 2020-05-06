@@ -1,10 +1,10 @@
 const cp = require('child_process');
 
-const tunnel = ({ project, port = 3000, region = 'eu' }) => {
+module.exports = ({ project, port = 3000, region = 'eu' }) => {
   const ssh = cp.spawn('ssh', [
-    '-nNT',
-    '-R',
-    `/var/projects/${project}/dev.sock:localhost:${port} ${project}@${region}.dev.monkapps.com`,
+    '-nNTR',
+    `/var/projects/${project}/dev.sock:localhost:${port}`,
+    `${project}@${region}.dev.monkapps.com`,
   ]);
 
   process.on('exit', () => {
@@ -27,5 +27,3 @@ const tunnel = ({ project, port = 3000, region = 'eu' }) => {
     console.log('Tunnel closed');
   });
 };
-
-module.exports = tunnel;
