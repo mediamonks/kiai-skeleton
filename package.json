@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm-run-all --parallel dev:ts dev:local",
     "dev:ts": "tsc --watch -p tslint.json",
-    "dev:local": "node tools/dev-server.js",
+    "dev:local": "NODE_ENV=development node tools/dev-server.js",
     "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "build:ts": "tsc -p tslint.json",
     "deploy": "npm run deploy:firebase",

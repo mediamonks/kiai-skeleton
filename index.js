@@ -1,10 +1,8 @@
 const fs = require('fs');
 const Kiai = require('kiai').default;
-const argv = require('minimist')(process.argv.slice(2));
 const packageJson = require('./package.json');
 
-const { local } = argv;
-
+const LOCAL = process.env.NODE_ENV === 'development';
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
 // Import the flow definitions
@@ -58,7 +56,7 @@ const clientId = fs.readFileSync('./config/CLIENT_ID').toString();
 
 app.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
 
-app.setFramework(local ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE, {
+app.setFramework(LOCAL ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE, {
   port: process.env.PORT,
 });
 

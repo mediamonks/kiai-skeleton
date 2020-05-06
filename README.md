@@ -1,7 +1,12 @@
 ### Kiai VoiceAction Skeleton
 Boilerplate and example code for using the Kiai VoiceAction Framework.
 
-## sync dialogflow agent
+#### Setting up Monkapps reverse tunnel for local dev
+* https://wiki.mediamonks.net/Monkapps2
+* See "Public URL for local machine"
+* Skip step 5, dev-server.js takes care of this
+
+#### Sync Dialogflow agent
 In order to use the syncing tools, there should be a key-file with credentials for the project you want to interact with in the `tools/sync/keys` folder. Note that you can have more than one file (for multiple projects).
 
 After that, you can run the sync script like so:
