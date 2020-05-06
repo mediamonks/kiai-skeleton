@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
-    "kiai": "^3.1.1",
+    "kiai": "^3.4.0",
     "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "portfinder": "^1.0.20"
