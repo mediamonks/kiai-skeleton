@@ -1,6 +1,6 @@
 {
   "name": "kiai-skeleton",
-  "region": "us",
+  "region": "eu",
   "version": "1.0.0",
   "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
   "main": "index.js",

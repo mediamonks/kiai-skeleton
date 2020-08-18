@@ -2,18 +2,13 @@ const fs = require('fs');
 const cp = require('child_process');
 const { name, region } = require('../package.json');
 
+if (name === 'kiai-skeleton') throw new Error('You have not set the project name');
+
 console.log('configuring proxy');
 
 console.log({ name, region });
-// const LOCAL = process.env.NODE_ENV === 'development';
 
-// console.log({ LOCAL });
-
-// proxy_pass http://mm-monkapps2-us-east-1.s3.us-east-1.amazonaws.com;
-//  proxy_pass http://mm-monkapps2-us-east-1.s3.us-east-1.amazonaws.com/adlingo-dog-webhook-dev$request_uri;
-
-const confFileString = `
-server {
+const confFileString = `server {
     listen 443 ssl;
     listen [::]:443 ssl;
     server_name ${name}.${region}.dev.monkapps.com;
@@ -52,17 +47,17 @@ server {
 
     # Default location
     location / {
-    proxy_set_header X-Forwarded-Host $http_host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header Host $http_host;
-    proxy_http_version 1.1;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $http_host;
+        proxy_http_version 1.1;
 
-    # to proxy WebSockets in nginx
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "upgrade";
-    proxy_pass http://unix:/var/projects/${name}/dev.sock:;
-    proxy_pass_header Sec-Websocket-Extensions;
+        # to proxy WebSockets in nginx
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass http://unix:/var/projects/${name}/dev.sock:;
+        proxy_pass_header Sec-Websocket-Extensions;
     }
 
     # Python project running with uwsgi?
@@ -79,7 +74,7 @@ server {
     }
 
     # Handle .php files through php-fpm (fastcgi)
-    location ~ \.php$ {
+    location ~ \\.php$ {
         try_files $uri =404;
         # This directive is managed by the system. Any changes made here will be overwritten
         fastcgi_pass unix:/var/run/php-fpm/${name}.sock;
@@ -106,27 +101,32 @@ server {
         include s3_proxy.conf;
         proxy_pass http://${getAwsRegion(region)}.amazonaws.com;
     }
-}`;
+}
+`;
 
 // create the temp conf file
 fs.writeFileSync('tmp/nginx.conf', confFileString);
 
 // SCP the file to the remote server
 try {
+  console.log('SCP conf to remote server');
   const scpPath = `${name}@${region}.dev.monkapps.com:.config/nginx.conf`;
   console.log({ scpPath });
-  //   cp.execSync(`scp tmp/nginx.conf ${scpPath}`);
+  cp.execSync(`scp tmp/nginx.conf ${scpPath}`);
+  console.log('SCP complete');
 } catch (err) {
   throw new Error(`SCP to remote server failed with error: ${err}`);
 }
 
 // remove the temp file
-// try {
-//   console.log('removing temp conf file');
-//   fs.unlinkSync('tmp/nginx.conf');
-// } catch (err) {
-//   console.error(err);
-// }
+try {
+  console.log('removing temp conf file');
+  fs.unlinkSync('tmp/nginx.conf');
+} catch (err) {
+  console.error(err);
+}
+
+console.log('Proxy Configuration Completed');
 
 // ----- HELPER FUNCTIONS ------
 function getAwsRegion(region) {

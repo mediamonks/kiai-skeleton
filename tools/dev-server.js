@@ -1,7 +1,7 @@
 const portfinder = require('portfinder');
 const nodemon = require('nodemon');
 const tunnel = require('./tunnel');
-const project = require('../package.json').name;
+const { name, region } = require('../package.json');
 
 (async () => {
   try {
@@ -10,7 +10,7 @@ const project = require('../package.json').name;
     portfinder.basePort = port;
     port = await portfinder.getPortPromise();
 
-    tunnel({ port, project });
+    tunnel({ port, project: name, region });
 
     process.env.PORT = port;
     nodemon('index.js');
