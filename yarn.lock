@@ -3351,10 +3351,10 @@ jws@^3.1.4, jws@^3.1.5, jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-kiai@^3.1.1:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/kiai/-/kiai-3.4.0.tgz#c8c5ee94276e59f90d94009e6da38abe54623409"
-  integrity sha512-QxU87NVJHBv8vG3iAW/mBse3c7VbPd8vWVfZDbSJiT7U8yPg1MabTtxjcdCk/w01klO5TX104lV+nNN41ZUWvA==
+kiai@^3.4.0:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/kiai/-/kiai-3.4.2.tgz#2bc32edf2e7e5c4235003d0595fc617bbdf17bbd"
+  integrity sha512-FP4g8P+BTqbBSd+jG+FfpAg4ODW3wUjc4YAkOAE8Y2CC5LLZNTL/npXPejVx+XTKxbnGHo84Q47lgGLLTWlrdA==
   dependencies:
     actions-on-google "^2.12.0"
     amplitude "^3.5.0"

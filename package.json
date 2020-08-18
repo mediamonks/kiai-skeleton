@@ -1,5 +1,6 @@
 {
   "name": "kiai-skeleton",
+  "region": "us",
   "version": "1.0.0",
   "description": "Boilerplate and example code for use with the Kiai VoiceAction Framework",
   "main": "index.js",
@@ -12,7 +13,8 @@
     "deploy": "npm run deploy:firebase",
     "deploy:firebase": "firebase deploy",
     "sync": "node ./tools/sync/index.js",
-    "voice": "node ./tools/voiceIndex.js"
+    "voice": "node ./tools/voiceIndex.js",
+    "create:proxy": "node ./tools/configureProxy.js"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
@@ -57,6 +59,6 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "8"
+    "node": "10"
   }
 }
