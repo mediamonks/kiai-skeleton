@@ -23,3 +23,7 @@ The `PROJECT-ID` is used to look up the correct key-file, and `OPERATION` can be
  * __restore__: restores the project from a zip file (3rd argument)
 
 See [Kiai VoiceAction Framework](https://github.com/mediamonks/kiai).
+
+#### Set up Google security for using the Simulator
+* Go to https://myaccount.google.com/activitycontrols
+* Enable Web & App Activity, Device Information, and Voice & Audio Activity
