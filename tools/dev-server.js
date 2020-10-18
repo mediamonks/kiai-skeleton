@@ -13,7 +13,8 @@ const project = require('../package.json').name;
     tunnel({ port, project });
 
     process.env.PORT = port;
-    nodemon('index.js');
+    const server = nodemon('index.js');
+    server.on('quit', () => process.exit());
   } catch (error) {
     console.error(error);
   }
