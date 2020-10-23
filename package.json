@@ -11,6 +11,7 @@
     "build:ts": "tsc -p tslint.json",
     "deploy": "npm run deploy:firebase",
     "deploy:firebase": "firebase deploy",
+    "deploy:storage": "gsutil -m cp -r assets/* gs://`cat PROJECT_ID`",
     "sync": "node ./tools/sync/index.js",
     "voice": "node ./tools/voiceIndex.js"
   },
@@ -18,10 +19,10 @@
     "@google-cloud/datastore": "^1.4.2",
     "kiai": "^3.9.0",
     "lodash": "^4.17.19",
-    "minimist": "^1.2.0",
-    "portfinder": "^1.0.20"
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.6.1",
     "colors": "^1.3.3",
     "columnify": "^1.5.4",
     "cross-env": "^5.2.0",
@@ -34,12 +35,14 @@
     "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-prettier": "^2.7.0",
-    "firebase-admin": "^6.5.1",
+    "firebase-admin": "7",
+    "firebase-tools": "^8.11.1",
     "localtunnel": "^2.0.0",
     "node-cleanup": "^2.1.2",
     "node-fs-extra": "^0.8.2",
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.3",
+    "portfinder": "^1.0.20",
     "prettier": "^1.16.1",
     "prompt-confirm": "^2.0.4",
     "tslint": "^5.12.1",

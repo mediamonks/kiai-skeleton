@@ -9,3 +9,5 @@ npm-debug.log
 /yarn-error.log
 /ngrok.pid
 *.log
+/log/*
+!.gitkeep
