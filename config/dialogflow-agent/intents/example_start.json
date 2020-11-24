@@ -1,0 +1,16 @@
+{
+  "events": [
+    "WELCOME"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": [],
+    "sv": [],
+    "da": [],
+    "no": [],
+    "nl": []
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

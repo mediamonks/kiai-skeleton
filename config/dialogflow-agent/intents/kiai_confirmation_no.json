@@ -1,0 +1,16 @@
+{
+  "events": [],
+  "isFallback": false,
+  "phrases": {
+    "en": [
+      "no",
+      "nope",
+      "no thanks"
+    ]
+  },
+  "parameters": [],
+  "contexts": [
+    "confirmation"
+  ],
+  "priority": "normal"
+}

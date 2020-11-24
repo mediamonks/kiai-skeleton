@@ -1,0 +1,12 @@
+{
+  "events": [
+    "actions_intent_NO_INPUT"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": []
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

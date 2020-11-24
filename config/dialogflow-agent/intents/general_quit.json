@@ -1,0 +1,19 @@
+{
+  "events": [
+    "actions_intent_CANCEL"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": [
+      "bye",
+      "see ya",
+      "talk to you later",
+      "i have to go",
+      "goodbye",
+      "end"
+    ]
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

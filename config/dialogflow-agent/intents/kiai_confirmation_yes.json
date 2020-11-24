@@ -1,0 +1,20 @@
+{
+  "events": [],
+  "isFallback": false,
+  "phrases": {
+    "en": [
+      "please",
+      "sure",
+      "yep",
+      "yes please",
+      "yeah",
+      "ok",
+      "affirmative",
+      "okay",
+      "yes"
+    ]
+  },
+  "parameters": [],
+  "contexts": ["confirmation"],
+  "priority": "normal"
+}

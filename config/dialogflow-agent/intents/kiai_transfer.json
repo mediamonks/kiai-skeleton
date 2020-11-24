@@ -1,0 +1,12 @@
+{
+  "events": [
+    "actions_intent_NEW_SURFACE"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": []
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

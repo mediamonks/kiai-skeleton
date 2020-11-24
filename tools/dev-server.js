@@ -14,6 +14,7 @@ const project = require('../package.json').name;
 
     process.env.PORT = port;
     nodemon('index.js');
+    nodemon.on('quit', () => process.exit());
   } catch (error) {
     console.error(error);
   }

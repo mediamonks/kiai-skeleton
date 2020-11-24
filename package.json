@@ -12,12 +12,13 @@
     "deploy": "npm run deploy:firebase",
     "deploy:firebase": "firebase deploy",
     "deploy:storage": "gsutil -m cp -r assets/* gs://`cat PROJECT_ID`",
-    "sync": "node ./tools/sync/index.js",
+    "sync": "node ./tools/sync/index.js `cat PROJECT_ID`",
     "voice": "node ./tools/voiceIndex.js"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
-    "kiai": "^3.9.0",
+    "firebase-admin": "^7.0.0",
+    "kiai": "^3.11.2",
     "lodash": "^4.17.19",
     "minimist": "^1.2.0"
   },
@@ -35,9 +36,7 @@
     "eslint-import-resolver-typescript": "^1.1.1",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-prettier": "^2.7.0",
-    "firebase-admin": "7",
     "firebase-tools": "^8.11.1",
-    "localtunnel": "^2.0.0",
     "node-cleanup": "^2.1.2",
     "node-fs-extra": "^0.8.2",
     "nodemon": "^1.19.1",
