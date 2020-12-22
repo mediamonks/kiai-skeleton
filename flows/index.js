@@ -1,5 +1,5 @@
 module.exports = {
     general: require('./general'),
-    example: require('./example'),
+    intro: require('./intro'),
 };
 //# sourceMappingURL=index.js.map

@@ -20,7 +20,8 @@ module.exports = {
       // .play('SFX_Spin')
       // .show('logo')
       .say('welcome_*')
-      .say('<par><media><audio src="https://freemusicarchive.org/file/music/no_curator/Monplaisir/Heat_of_the_Summer/Monplaisir_-_04_-_Stage_1_Level_24.mp3"></audio></media><media><speak>Would you like to see some kittens?</speak></media></par>')
+      // .say('<par><media><audio src="https://freemusicarchive.org/file/music/no_curator/Monplaisir/Heat_of_the_Summer/Monplaisir_-_04_-_Stage_1_Level_24.mp3"></audio></media><media><speak>Would you like to see some kittens?</speak></media></par>')
+      .show('https://media.giphy.com/media/jS6sVMK2fu4Uw/giphy.gif')
       // .say('Would you like to see some kittens?')
       .confirm({ yes: ':list', no: ':end' });
   },
