@@ -1,5 +1,6 @@
 ### Kiai VoiceAction Skeleton
 Boilerplate and example code for using the Kiai VoiceAction Framework.
+See [Kiai VoiceAction Framework](https://github.com/mediamonks/kiai).
 
 #### Setting up Monkapps reverse tunnel for local dev
 * https://wiki.mediamonks.net/Monkapps2
@@ -21,8 +22,6 @@ The `PROJECT-ID` is used to look up the correct key-file, and `OPERATION` can be
  * __validate__: gives some reports on the local files
  * __export__: exports the project to a zip file
  * __restore__: restores the project from a zip file (3rd argument)
-
-See [Kiai VoiceAction Framework](https://github.com/mediamonks/kiai).
 
 #### Set up Google security for using the Simulator
 * Go to https://myaccount.google.com/activitycontrols
