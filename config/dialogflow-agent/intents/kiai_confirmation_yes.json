@@ -15,6 +15,8 @@
     ]
   },
   "parameters": [],
-  "contexts": ["confirmation"],
+  "contexts": [
+    "kiai_confirmation"
+  ],
   "priority": "normal"
 }

@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 module.exports = {
     start(conv) {
         // conv.login(':login', 'Please log in');
-        conv.next(':welcome');
+        conv.say('Lorem ipsum');
+        conv.show('https://media.giphy.com/media/jS6sVMK2fu4Uw/giphy.gif', 'Hi there');
     },
     login(conv, loginSuccessful) {
         if (loginSuccessful) {
@@ -20,8 +21,8 @@ module.exports = {
             // .show('logo')
             .say('welcome_*')
             // .say('<par><media><audio src="https://freemusicarchive.org/file/music/no_curator/Monplaisir/Heat_of_the_Summer/Monplaisir_-_04_-_Stage_1_Level_24.mp3"></audio></media><media><speak>Would you like to see some kittens?</speak></media></par>')
-            .show('https://media.giphy.com/media/jS6sVMK2fu4Uw/giphy.gif')
-            // .say('Would you like to see some kittens?')
+            .showCard({ image: 'https://media.giphy.com/media/jS6sVMK2fu4Uw/giphy.gif', text: 'Would you like to see more kittens?' })
+            .say('Would you like to see more kittens?')
             .confirm({ yes: ':list', no: ':end' });
     },
     list(conv) {

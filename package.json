@@ -5,20 +5,21 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm-run-all --parallel dev:ts dev:local",
-    "dev:ts": "tsc --watch -p tslint.json",
+    "dev:ts": "tsc --watch -p tsconfig.json",
     "dev:local": "NODE_ENV=development node tools/dev-server.js",
     "build": "npm run build:ts && rm -rf dist/ && mkdir -p dist && cp -r config flows lib index.js package.json dist/",
     "build:ts": "tsc -p tslint.json",
     "deploy": "npm run deploy:firebase",
     "deploy:firebase": "firebase deploy",
     "deploy:storage": "gsutil -m cp -r assets/* gs://`cat PROJECT_ID`",
+    "tunnel": "ssh -nNT -R /var/projects/kiai-skeleton/dev.sock:localhost:3000 kiai-skeleton@eu.dev.monkapps.com",
     "sync": "node ./tools/sync/index.js `cat PROJECT_ID`",
     "voice": "node ./tools/voiceIndex.js"
   },
   "dependencies": {
     "@google-cloud/datastore": "^1.4.2",
     "firebase-admin": "^7.0.0",
-    "kiai": "^3.11.2",
+    "kiai": "^3.16.1",
     "lodash": "^4.17.19",
     "minimist": "^1.2.0"
   },

@@ -14,8 +14,4 @@ module.exports = {
   quit(conv: Conversation) {
     conv.track('exit', { flowIntent: `${conv.currentFlow}:${conv.currentIntent}` }).end();
   },
-  
-  transfer(conv: Conversation) {
-    conv.say('Hello from another device!');
-  },
 };

@@ -1,0 +1,14 @@
+{
+  "events": [
+    "WELCOME",
+    "GOOGLE_ASSISTANT_WELCOME"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": [
+    ]
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

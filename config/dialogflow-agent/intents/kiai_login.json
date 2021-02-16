@@ -1,0 +1,12 @@
+{
+  "events": [
+    "actions_intent_SIGN_IN"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": []
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

@@ -12,8 +12,5 @@ module.exports = {
     quit(conv) {
         conv.track('exit', { flowIntent: `${conv.currentFlow}:${conv.currentIntent}` }).end();
     },
-    transfer(conv) {
-        conv.say('Hello from another device!');
-    },
 };
 //# sourceMappingURL=general.js.map

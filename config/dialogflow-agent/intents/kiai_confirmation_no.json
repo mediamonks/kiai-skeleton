@@ -10,7 +10,7 @@
   },
   "parameters": [],
   "contexts": [
-    "confirmation"
+    "kiai_confirmation"
   ],
   "priority": "normal"
 }

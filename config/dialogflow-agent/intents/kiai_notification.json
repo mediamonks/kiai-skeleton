@@ -1,0 +1,12 @@
+{
+  "events": [
+    "actions_intent_CONFIGURE_UPDATES"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": []
+  },
+  "parameters": [],
+  "contexts": [],
+  "priority": "normal"
+}

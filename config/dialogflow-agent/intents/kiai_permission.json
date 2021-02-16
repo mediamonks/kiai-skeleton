@@ -1,0 +1,14 @@
+{
+  "events": [
+    "actions_intent_PERMISSION"
+  ],
+  "isFallback": false,
+  "phrases": {
+    "en": []
+  },
+  "parameters": [],
+  "contexts": [
+    "kiai_permission"
+  ],
+  "priority": "normal"
+}

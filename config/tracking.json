@@ -1,8 +1,8 @@
 {
   "amplitude": {
-    "apiKey": "AMPLITUDE API KEY HERE"
+    "apiKey": ""
   },
   "googleAnalytics": {
-    "trackingId": "GA UA HERE"
+    "trackingId": ""
   }
 }
