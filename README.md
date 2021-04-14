@@ -1,11 +1,23 @@
-### Kiai VoiceAction Skeleton
+## Kiai VoiceAction Skeleton
 Boilerplate and example code for using the Kiai VoiceAction Framework.
 See [Kiai VoiceAction Framework](https://github.com/mediamonks/kiai).
+
+### First time setup
+
+#### Set up Google security for using the AoG Simulator
+* Go to https://myaccount.google.com/activitycontrols
+* Enable Web & App Activity, Device Information, and Voice & Audio Activity
 
 #### Setting up Monkapps reverse tunnel for local dev
 * https://wiki.mediamonks.net/Monkapps2
 * See "Public URL for local machine"
 * Skip step 5, dev-server.js takes care of this
+
+### Project Configuration
+
+#### Webhook Authentication
+* In `config/dialogflow.json`, put a random string key in the `authenticationKey` field.
+* In the Dialogflow console, go to Fulfillment and in the `Headers` field, put the key `Authentication` and the value `Bearer {KEY}`, where `{KEY}` is the same key that you put in the config file.
 
 #### Sync Dialogflow agent
 In order to use the syncing tools, there should be a key-file with credentials for the project you want to interact with in the `tools/sync/keys` folder. Note that you can have more than one file (for multiple projects).
@@ -22,7 +34,3 @@ The `PROJECT-ID` is used to look up the correct key-file, and `OPERATION` can be
  * __validate__: gives some reports on the local files
  * __export__: exports the project to a zip file
  * __restore__: restores the project from a zip file (3rd argument)
-
-#### Set up Google security for using the Simulator
-* Go to https://myaccount.google.com/activitycontrols
-* Enable Web & App Activity, Device Information, and Voice & Audio Activity
