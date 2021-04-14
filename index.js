@@ -50,11 +50,7 @@ if (!global.Kiai) {
     tracking,
   });
 
-  const fs = require('fs');
-
-  const clientId = fs.readFileSync('./config/CLIENT_ID').toString();
-
-  global.Kiai.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, { clientId });
+  global.Kiai.addPlatform(Kiai.PLATFORMS.DIALOGFLOW, require('./config/dialogflow.json'));
 
   global.Kiai.setFramework(LOCAL ? Kiai.FRAMEWORKS.EXPRESS : Kiai.FRAMEWORKS.FIREBASE, {
     port: process.env.PORT,
@@ -70,4 +66,4 @@ const packageJson = require('./package.json');
 const MAJOR_VERSION = packageJson.version.split('.').shift();
 
 // Export the framework for FaaS services
-module.exports = { [`v${MAJOR_VERSION}`]: global.Kiai.framework };
+module.exports = { [`v${MAJOR_VERSION}`]: global.Kiai.framework.endpoints };

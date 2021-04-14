@@ -5009,10 +5009,10 @@ keyv@^3.0.0:
   dependencies:
     json-buffer "3.0.0"
 
-kiai@^3.16.1:
-  version "3.16.1"
-  resolved "https://registry.yarnpkg.com/kiai/-/kiai-3.16.1.tgz#40774083fd10ac0581afb199a37c30463464f557"
-  integrity sha512-f0+RI80GGTd0JBOYfcBBhu7UEsmziO+Os9u7BihCtUZfQ9klwIeRoNd0B8QRFqKUekW/6Vo8EtpRo+U5keiueA==
+kiai@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/kiai/-/kiai-4.0.0.tgz#dc21b6fa4fd882949201342f7562c40101af3d5f"
+  integrity sha512-WkBczKLf0IsCLFIYW9GPPPHknuH1QCCLr7CNgXNH0nsKQs/L2hmyIL/F1rK5mBuFRkl7nyJrmQ9u7iz04v34bg==
   dependencies:
     actions-on-google "^2.13.0"
     amplitude "^5.1.3"
